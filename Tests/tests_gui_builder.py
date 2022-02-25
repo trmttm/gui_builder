@@ -3,12 +3,12 @@ from typing import Union
 
 from view_tkinter import tk_interface
 
-from stacker.widgets import Button
-from stacker.widgets import Entry
-from stacker.widgets import Label
 from stacker import Spacer
 from stacker import Stacker
 from stacker import Widget
+from stacker.widgets import Button
+from stacker.widgets import Entry
+from stacker.widgets import Label
 
 
 def vstacker(*widgets: Union[Widget, Spacer, list]) -> list:
@@ -140,17 +140,17 @@ class MyTestCase(unittest.TestCase):
                 stacker.hstack(
                     Label('label_3').text('Name a').width(10),
                     Entry('entry_3').default_value('First Last a').width(15),
-                    Button('button_3').text('Add a').width(10)
+                    Button('button_3').text('Add a').width(10).command(lambda: print('pushed a'))
                 ),
                 stacker.hstack(
                     Label('label_4').text('Name b').width(10),
                     Entry('entry_4').default_value('First Last b').width(15),
-                    Button('button_4').text('Add b').width(10)
+                    Button('button_4').text('Add b').width(10).command(lambda: print('pushed b'))
                 ),
                 stacker.hstack(
                     Label('label_5').text('Name c').width(10),
                     Entry('entry_5').default_value('First Last c').width(15),
-                    Button('button_5').text('Add c').width(10)
+                    Button('button_5').text('Add c').width(10).command(lambda: print('pushed c'))
                 ),
             ),
         )
