@@ -119,7 +119,9 @@ class MyTestCase(unittest.TestCase):
         stacker = Stacker()
 
         stacker.hstack(
+            Spacer(),
             stacker.vstack(
+                Spacer(),
                 stacker.hstack(
                     Label('label_0').text('Name1').width(10),
                     Entry('entry_0').default_value('First Last1').width(15),
@@ -135,9 +137,10 @@ class MyTestCase(unittest.TestCase):
                     Entry('entry_2').default_value('First Last3').width(15),
                     Button('button_2').text('Add3').width(10).command(lambda: print('Pushed3'))
                 ),
+                Spacer(),
             ),
-            Spacer(),
             stacker.vstack(
+                Spacer(),
                 stacker.hstack(
                     Label('label_3').text('Name a').width(10),
                     Entry('entry_3').default_value('First Last a').width(15),
@@ -153,7 +156,9 @@ class MyTestCase(unittest.TestCase):
                     Entry('entry_5').default_value('First Last c').width(15),
                     Button('button_5').text('Add c').width(10).command(lambda: print('pushed c'))
                 ),
+                Spacer(),
             ),
+            Spacer(),
         )
 
         launch_app(stacker.view_model)

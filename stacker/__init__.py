@@ -87,10 +87,12 @@ class Stacker:
                 new_stacker._view_model.append(widget_model)
 
         # Insert Frame
+        if not space:
+            space = [0]
         if direction == new_stacker._v_direction:
-            row_space, col_space = space, []
+            row_space, col_space = space, [0]
         else:
-            row_space, col_space = [], space
+            row_space, col_space = [0], space
         rows_and_weights = tuple(row_space), tuple(1 for _ in row_space)
         cols_and_weights = tuple(col_space), tuple(1 for _ in col_space)
         new_stacker._frame_options = fr_options(rows_and_weights, cols_and_weights, )
