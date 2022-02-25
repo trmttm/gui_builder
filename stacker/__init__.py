@@ -117,14 +117,14 @@ class Stacker:
             level = child_stacker._level
             frame_id = child_stacker._frame_id
             if level in sorted_frames:
-                sorted_frames[level].append(frame_id)
+                sorted_frames[level].insert(0, frame_id)
             else:
                 sorted_frames[level] = [frame_id]
 
         # for child_stacker in reversed(self._children_stackers):
         for level in sorted_frames.keys():
             frame_ids = sorted_frames.get(level)
-            for frame_id in reversed(frame_ids):
+            for frame_id in frame_ids:
                 child_stacker: Stacker = self._frame_to_stacker_dictionary.get(frame_id)
                 if child_stacker is None:
                     child_stacker = self
