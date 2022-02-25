@@ -54,6 +54,7 @@ class Stacker:
         fr_options = tk_interface.frame_options
 
         new_stacker = Stacker()
+        self._frame_to_stacker_dictionary[new_stacker._frame_id] = new_stacker
         self._children_stackers.append(new_stacker)
         frame_id = new_stacker._frame_id
 
@@ -80,7 +81,6 @@ class Stacker:
                 child_stacker.set_row(row)
                 child_stacker.set_col(col)
                 child_stacker.increment_level()
-                self._frame_to_stacker_dictionary[child_stacker._frame_id] = child_stacker
             else:
                 w: Widget = w
                 widget_model = f(frame_id, w.id, w.widget_type, row, row, col, col, sticky, w.pad_xy, **w.options)
@@ -126,9 +126,6 @@ class Stacker:
             frame_ids = sorted_frames.get(level)
             for frame_id in frame_ids:
                 child_stacker: Stacker = self._frame_to_stacker_dictionary.get(frame_id)
-                if child_stacker is None:
-                    child_stacker = self
-                    self._frame_id = frame_id
                 frame_id = child_stacker._frame_id
                 frame_parent = child_stacker._parent
                 frame_options_ = child_stacker._frame_options

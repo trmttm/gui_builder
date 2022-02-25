@@ -136,6 +136,7 @@ class MyTestCase(unittest.TestCase):
                     Button('button_2').text('Add3').width(10).command(lambda: print('Pushed3'))
                 ),
             ),
+            Spacer(),
             stacker.vstack(
                 stacker.hstack(
                     Label('label_3').text('Name a').width(10),
