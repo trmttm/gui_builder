@@ -3,12 +3,12 @@ from typing import Union
 
 from view_tkinter import tk_interface
 
-from stacker import Spacer
 from stacker import Stacker
-from stacker import Widget
 from stacker.widgets import Button
 from stacker.widgets import Entry
 from stacker.widgets import Label
+from stacker.widgets import Spacer
+from stacker.widgets import Widget
 
 
 def vstacker(*widgets: Union[Widget, Spacer, list]) -> list:

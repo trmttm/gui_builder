@@ -1,7 +1,10 @@
 from typing import Tuple
 
+from ..spacer_abc import SpacerABC
+from ..widget_abc import WidgetABC
 
-class Widget:
+
+class Widget(WidgetABC):
     def __init__(self, widget_id: str):
         self._id = widget_id
         self._pad_xy = (0, 0)
@@ -36,7 +39,7 @@ class Widget:
         return self
 
 
-class Spacer(Widget):
+class Spacer(Widget, SpacerABC):
     def __init__(self):
         Widget.__init__(self, 'spacer')
         self._options['text'] = ''
@@ -63,6 +66,10 @@ class Entry(Widget):
     def default_value(self, value) -> 'Entry':
         self._options['default_value'] = value
         return self
+
+
+class PanedWindow(Widget):
+    pass
 
 
 widget_dictionary = {
