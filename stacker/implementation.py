@@ -43,10 +43,14 @@ def register_stacker(row: int, col: int, element: StackerABC, new_stacker: Stack
         frame_id = new_stacker.frame_id
         child_stacker = element
         new_stacker.children_stackers.append(child_stacker)
-        child_stacker.set_parent(frame_id)
-        child_stacker.set_row(row)
-        child_stacker.set_col(col)
-        child_stacker.increment_level()
+        configure_child_stacker(child_stacker, frame_id, row, col)
+
+
+def configure_child_stacker(child_stacker: StackerABC, frame_id, row: int, col: int):
+    child_stacker.set_parent(frame_id)
+    child_stacker.set_row(row)
+    child_stacker.set_col(col)
+    child_stacker.increment_level()
 
 
 def register_widgets(row: int, col: int, element: WidgetABC, new_stacker: StackerABC):

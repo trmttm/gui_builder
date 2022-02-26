@@ -1,5 +1,7 @@
 from typing import Tuple
 
+from .. import StackerABC
+from ..implementation import configure_child_stacker
 from ..spacer_abc import SpacerABC
 from ..widget_abc import WidgetABC
 
@@ -69,7 +71,39 @@ class Entry(Widget):
 
 
 class PanedWindow(Widget):
-    pass
+    _is_vertical = 'is_vertical'
+
+    def __init__(self, widget_id: str):
+        Widget.__init__(self, widget_id)
+        self._options = {
+            self._is_vertical: True,
+            'frame_ids': (),
+            'weights': (),
+        }
+
+    def is_vertical(self):
+        self._options[self._is_vertical] = True
+        return self
+
+    def is_horizontal(self):
+        self._options[self._is_vertical] = False
+        return self
+
+    def weights(self, weights: tuple):
+        self._options['weights'] = weights
+        return self
+
+    def stackers(self, *stackers: StackerABC):
+        for n, stacker in enumerate(stackers):
+            if self._is_vertical:
+                row, col = n, 0
+            else:
+                row, col = 0, n
+            configure_child_stacker(stacker, self.id, row, col)
+
+            self._options['frame_ids'] += (stacker.frame_id,)
+            self._options['weights'] += (1,)  # default weight = 1
+        return self
 
 
 widget_dictionary = {
@@ -77,4 +111,5 @@ widget_dictionary = {
     Button: 'button',
     Entry: 'entry',
     Spacer: 'label',
+    PanedWindow: 'paned_window',
 }

@@ -95,6 +95,32 @@ class MyTestCase(unittest.TestCase):
 
         launch_app(stacker.view_model)
 
+    def test_paned_window(self):
+        from stacker import Stacker
+        from stacker import widgets as w
+        stacker = Stacker()
+
+        stacker.hstack(
+            w.Spacer(),
+            w.PanedWindow('paned_window1').is_horizontal().stackers(
+                stacker.vstack(
+                    w.Label('label1').text('Label1'),
+                    w.Button('button1').text('Button1').command(lambda: print('button1')),
+                    w.Spacer(),
+                ),
+                stacker.vstack(
+                    stacker.hstack(
+                        w.Label('label2').text('Label2'),
+                        w.Button('button2').text('Button2').command(lambda: print('button2')),
+                    ),
+                    w.Spacer(),
+                ),
+            ),
+            w.Spacer(),
+        )
+
+        launch_app(stacker.view_model)
+
 
 if __name__ == '__main__':
     unittest.main()

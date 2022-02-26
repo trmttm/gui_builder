@@ -123,7 +123,7 @@ class Stacker(StackerABC):
         self._insert_frames_to_view_model(sorted_frames)
 
     def _insert_frames_to_view_model(self, sorted_frames: dict):
-        for level in sorted_frames.keys():
+        for level in tuple(reversed(sorted(sorted_frames.keys()))):
             frame_ids = sorted_frames.get(level)
             for frame_id in frame_ids:
                 frozen_frame = implementation.freeze_frame(frame_id, self._frame_to_stacker_dictionary)
