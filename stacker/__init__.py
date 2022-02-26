@@ -4,6 +4,7 @@ from typing import Union
 from stacker.spacer_abc import SpacerABC
 from stacker.widget_abc import WidgetABC
 from . import implementation
+from . import handle_other_frame_holders
 from .stacker_abc import StackerABC
 
 
@@ -134,6 +135,6 @@ class Stacker(StackerABC):
         if not self._flag_already_inserted_frame:
             self._combine_view_models()
             self._insert_frames()
-            self._view_model = implementation.sort_view_model_for_paned_window(self._view_model)
+            self._view_model = handle_other_frame_holders.sort_view_model_for_paned_window(self._view_model)
             self._flag_already_inserted_frame = True
         return self._view_model

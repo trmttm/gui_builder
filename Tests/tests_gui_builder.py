@@ -128,7 +128,7 @@ class MyTestCase(unittest.TestCase):
         stacker = Stacker()
 
         stacker.hstack(
-            w.PanedWindow('paned_window1').is_horizontal().stackers(
+            w.PanedWindow('paned_window1').is_horizontal().weights((1, 8)).stackers(
                 stacker.vstack(
                     stacker.hstack(
                         w.Label('label1').text('Label1'),
@@ -149,6 +149,98 @@ class MyTestCase(unittest.TestCase):
                     w.Canvas('canvas').color('pink'),
                 ),
             ),
+        )
+        launch_app(stacker.view_model)
+
+    def test_notebook(self):
+        from stacker import Stacker
+        from stacker import widgets as w
+        stacker = Stacker()
+
+        stacker.hstack(
+            w.NoteBook('paned_window1').frame_names(('A', 'B', 'C')).stackers(
+                stacker.vstack(
+                    stacker.hstack(
+                        w.Label('label1').text('Label1'),
+                        w.Button('button1').text('Button1').command(lambda: print('button1')).width(10),
+                    ),
+                    stacker.hstack(
+                        w.Label('label2').text('Label2'),
+                        w.Button('button2').text('Button2').command(lambda: print('button2')).width(10),
+                    ),
+                    stacker.hstack(
+                        w.Label('label3').text('Label3'),
+                        w.Button('button3').text('Button3').command(lambda: print('button3')).width(10),
+                    ),
+                    w.Spacer(),
+                    w.Button('button4').text('Button4').command(lambda: print('button4')).width(10),
+                ),
+                stacker.vstack(
+                    w.Canvas('canvas1').color('pink'),
+                ),
+                stacker.hstack(
+                    stacker.vstack(
+                        w.Canvas('canvas2').color('light yellow'),
+                        w.Button('button5').text('Button5').command(lambda: print('button5')).width(10),
+                    ),
+                ),
+            ),
+        )
+        launch_app(stacker.view_model)
+
+    def test_tree_view(self):
+        from stacker import Stacker
+        from stacker import widgets as w
+        stacker = Stacker()
+
+        stacker.hstack(
+            w.PanedWindow('paned_window1').is_horizontal().weights((6, 1)).stackers(
+                stacker.hstack(
+                    w.NoteBook('notebook1').frame_names(('A', 'B', 'Tree')).stackers(
+                        stacker.vstack(
+                            stacker.hstack(
+                                w.Label('label1').text('Label1'),
+                                w.Button('button1').text('Button1').command(lambda: print('button1')).width(10),
+                            ),
+                            stacker.hstack(
+                                w.Label('label2').text('Label2'),
+                                w.Button('button2').text('Button2').command(lambda: print('button2')).width(10),
+                            ),
+                            stacker.hstack(
+                                w.Label('label3').text('Label3'),
+                                w.Button('button3').text('Button3').command(lambda: print('button3')).width(10),
+                            ),
+                            w.Spacer(),
+                            w.Button('button4').text('Button4').command(lambda: print('button4')).width(10),
+                        ),
+                        stacker.vstack(
+                            w.Canvas('canvas1').color('pink'),
+                        ),
+                        stacker.hstack(
+                            stacker.vstack(
+                                w.TreeView('tree1'),
+                                w.Button('button5').text('Button5').command(lambda: print('button5')).width(10),
+                            ),
+                        ),
+                    ),
+                ),
+                stacker.vstack(
+                    w.TreeView('tree2').padding(2, 2),
+                    w.TextBox('text').padding(2, 2),
+                ),
+            ),
+        )
+        launch_app(stacker.view_model)
+
+    def test_text(self):
+        from stacker import Stacker
+        from stacker import widgets as w
+        stacker = Stacker()
+
+        stacker.hstack(
+            w.TextBox('text1').back_ground_color('light yellow').border_width(10),
+            w.TextBox('text1').back_ground_color('light blue').text_color('red').cursor_color('brown').select_color(
+                'yellow'),
         )
         launch_app(stacker.view_model)
 

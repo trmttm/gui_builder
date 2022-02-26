@@ -33,11 +33,13 @@ class Widget(WidgetABC):
         return self
 
     def width(self, width: int):
-        self._options['width'] = width
-        return self
+        return self.set_options('width', width)
 
     def height(self, height: int):
-        self._options['height'] = height
+        return self.set_options('height', height)
+
+    def set_options(self, option, value):
+        self._options[option] = value
         return self
 
 
@@ -50,8 +52,7 @@ class Spacer(Widget, SpacerABC):
 
 class WidgetWithText(Widget):
     def text(self, text: str) -> 'WidgetWithText':
-        self._options['text'] = text
-        return self
+        return self.set_options('text', text)
 
 
 class Label(WidgetWithText):
@@ -60,14 +61,12 @@ class Label(WidgetWithText):
 
 class Button(WidgetWithText):
     def command(self, command) -> 'Button':
-        self._options['command'] = command
-        return self
+        return self.set_options('command', command)
 
 
 class Entry(Widget):
-    def default_value(self, value) -> 'Entry':
-        self._options['default_value'] = value
-        return self
+    def default_value(self, default_value) -> 'Entry':
+        return self.set_options('default_value', default_value)
 
 
 class PanedWindow(Widget):
@@ -82,16 +81,14 @@ class PanedWindow(Widget):
         }
 
     def is_vertical(self):
-        self._options[self._is_vertical] = True
-        return self
+        return self.set_options(self._is_vertical, True)
 
     def is_horizontal(self):
         self._options[self._is_vertical] = False
         return self
 
     def weights(self, weights: tuple):
-        self._options['weights'] = weights
-        return self
+        return self.set_options('weights', weights)
 
     def stackers(self, *stackers: StackerABC):
         for n, stacker in enumerate(stackers):
@@ -106,10 +103,48 @@ class PanedWindow(Widget):
         return self
 
 
+class NoteBook(Widget):
+    def __init__(self, widget_id: str):
+        Widget.__init__(self, widget_id)
+        self._options = {
+            'frame_ids': (),
+            'frame_names': (),
+        }
+
+    def stackers(self, *stackers: StackerABC):
+        for n, stacker in enumerate(stackers):
+            configure_child_stacker(stacker, self.id, 0, 0)
+            self._options['frame_ids'] += (stacker.frame_id,)
+        return self
+
+    def frame_names(self, frame_names: tuple):
+        return self.set_options('frame_names', frame_names)
+
+
 class Canvas(Widget):
     def color(self, color: str):
-        self._options['bg'] = color
-        return self
+        return self.set_options('bg', color)
+
+
+class TreeView(Widget):
+    pass
+
+
+class TextBox(Widget):
+    def back_ground_color(self, color):
+        return self.set_options('bg', color)
+
+    def text_color(self, color):
+        return self.set_options('fg', color)
+
+    def cursor_color(self, color):
+        return self.set_options('insertbackground', color)
+
+    def select_color(self, color):
+        return self.set_options('selectbackground', color)
+
+    def border_width(self, width):
+        return self.set_options('bd', width)
 
 
 widget_dictionary = {
@@ -119,4 +154,7 @@ widget_dictionary = {
     Spacer: 'label',
     PanedWindow: 'paned_window',
     Canvas: 'canvas',
+    NoteBook: 'notebook',
+    TreeView: 'treeview',
+    TextBox: 'text',
 }
