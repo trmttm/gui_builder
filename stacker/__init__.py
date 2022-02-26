@@ -71,6 +71,9 @@ class Stacker(StackerABC):
     def static_kwargs(self):
         return self._static_kwargs
 
+    def add_widget_model(self, widget_model):
+        self._view_model.append(widget_model)
+
     def set_frame_options(self, frame_options):
         self._frame_options = frame_options
 

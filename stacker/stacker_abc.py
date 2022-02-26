@@ -7,6 +7,10 @@ class StackerABC(abc.ABC):
     def v_direction(self):
         pass
 
+    @abc.abstractmethod
+    def add_widget_model(self, widget_model):
+        pass
+
     @property
     @abc.abstractmethod
     def frame_options(self):

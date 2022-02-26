@@ -55,7 +55,7 @@ def register_widgets(row: int, col: int, element: WidgetABC, new_stacker: Stacke
         f = tk_interface.widget_model
         frame_id = new_stacker.frame_id
         widget_model = f(frame_id, w.id, w.widget_type, row, row, col, col, 'nsew', w.pad_xy, **w.options)
-        new_stacker._view_model.append(widget_model)
+        new_stacker.add_widget_model(widget_model)
 
 
 def get_sorted_frames(children_stackers: List[StackerABC]) -> dict:
