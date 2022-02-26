@@ -244,6 +244,61 @@ class MyTestCase(unittest.TestCase):
         )
         launch_app(stacker.view_model)
 
+    def test_radio_button(self):
+        from stacker import Stacker
+        from stacker import widgets as w
+        stacker = Stacker()
+
+        stacker.vstack(
+            stacker.hstack(
+                w.TextBox('text1').back_ground_color('pink'),
+                w.TextBox('text2'),
+            ),
+            stacker.hstack(
+                w.Spacer(),
+                w.RadioButton('radio_buttond1').names(('Japan', 'US', 'China')).is_horizontal(),
+                w.Spacer(),
+            ),
+        )
+        launch_app(stacker.view_model)
+
+    def test_check_button(self):
+        from stacker import Stacker
+        from stacker import widgets as w
+        stacker = Stacker()
+
+        stacker.vstack(
+            stacker.hstack(
+                w.TextBox('text1').back_ground_color('pink'),
+                w.TextBox('text2'),
+            ),
+            stacker.hstack(
+                w.Spacer(),
+                w.Label('label1').text('Export'),
+                w.CheckButton('check_buttond1').value(False),
+                w.Spacer(),
+            ),
+        )
+        launch_app(stacker.view_model)
+
+    def test_combo_box(self):
+        from stacker import Stacker
+        from stacker import widgets as w
+        stacker = Stacker()
+
+        stacker.vstack(
+            stacker.hstack(
+                w.TextBox('text1').back_ground_color('pink'),
+                w.TextBox('text2'),
+            ),
+            stacker.hstack(
+                w.Spacer(),
+                w.ComboBox('combobox_1').values(tuple(range(100))).height(30).width(30),
+                w.Spacer(),
+            ),
+        )
+        launch_app(stacker.view_model)
+
 
 if __name__ == '__main__':
     unittest.main()

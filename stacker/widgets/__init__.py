@@ -147,6 +147,48 @@ class TextBox(Widget):
         return self.set_options('bd', width)
 
 
+class RadioButton(Widget):
+    _is_vertical = 'is_vertical'
+
+    def __init__(self, widget_id: str):
+        Widget.__init__(self, widget_id)
+        self._options = {
+            self._is_vertical: True,
+            'int_var_id': f'int_var_{self._id}',
+            'frame_id': f'frame_{self._id}',
+            'names': (),
+        }
+
+    def is_vertical(self):
+        return self.set_options(self._is_vertical, True)
+
+    def is_horizontal(self):
+        self._options[self._is_vertical] = False
+        return self
+
+    def frame_id(self, frame_id: str):
+        return self.set_options('frame_id', frame_id)
+
+    def int_var_id(self, int_var_id: str):
+        return self.set_options('int_var_id', int_var_id)
+
+    def names(self, names: tuple):
+        return self.set_options('names', names)
+
+
+class CheckButton(Widget):
+    def value(self, value: bool):
+        return self.set_options('value', value)
+
+
+class ComboBox(Widget):
+    def values(self, values: tuple):
+        return self.set_options('value', values)
+
+    def widths(self, widths: tuple):
+        return self.set_options('widths', widths)
+
+
 widget_dictionary = {
     Label: 'label',
     Button: 'button',
@@ -157,4 +199,7 @@ widget_dictionary = {
     NoteBook: 'notebook',
     TreeView: 'treeview',
     TextBox: 'text',
+    RadioButton: 'radio_button',
+    CheckButton: 'check_button',
+    ComboBox: 'combo_box',
 }
