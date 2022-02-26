@@ -106,10 +106,17 @@ class PanedWindow(Widget):
         return self
 
 
+class Canvas(Widget):
+    def color(self, color: str):
+        self._options['bg'] = color
+        return self
+
+
 widget_dictionary = {
     Label: 'label',
     Button: 'button',
     Entry: 'entry',
     Spacer: 'label',
     PanedWindow: 'paned_window',
+    Canvas: 'canvas',
 }

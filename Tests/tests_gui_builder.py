@@ -122,6 +122,36 @@ class MyTestCase(unittest.TestCase):
         )
         launch_app(stacker.view_model)
 
+    def test_canvas(self):
+        from stacker import Stacker
+        from stacker import widgets as w
+        stacker = Stacker()
+
+        stacker.hstack(
+            w.PanedWindow('paned_window1').is_horizontal().stackers(
+                stacker.vstack(
+                    stacker.hstack(
+                        w.Label('label1').text('Label1'),
+                        w.Button('button1').text('Button1').command(lambda: print('button1')).width(10),
+                    ),
+                    stacker.hstack(
+                        w.Label('label2').text('Label2'),
+                        w.Button('button2').text('Button2').command(lambda: print('button2')).width(10),
+                    ),
+                    stacker.hstack(
+                        w.Label('label3').text('Label3'),
+                        w.Button('button3').text('Button3').command(lambda: print('button3')).width(10),
+                    ),
+                    w.Spacer(),
+                    w.Button('button4').text('Button4').command(lambda: print('button4')).width(10),
+                ),
+                stacker.vstack(
+                    w.Canvas('canvas').color('pink'),
+                ),
+            ),
+        )
+        launch_app(stacker.view_model)
+
 
 if __name__ == '__main__':
     unittest.main()
