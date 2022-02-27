@@ -110,7 +110,6 @@ class PanedWindow(Widget):
             if not issubclass(stacker.__class__, StackerABC):
                 # wdiget is directly passed. wrap the widget with stacker
                 stacker = self._stacker.hstack(stacker)
-
             configure_child_stacker(stacker, self.id, row, col)
 
             self._options['frame_ids'] += (stacker.frame_id,)
@@ -119,15 +118,19 @@ class PanedWindow(Widget):
 
 
 class NoteBook(Widget):
-    def __init__(self, widget_id: str):
+    def __init__(self, widget_id: str, stacker):
         Widget.__init__(self, widget_id)
         self._options = {
             'frame_ids': (),
             'frame_names': (),
         }
+        self._stacker = stacker
 
     def stackers(self, *stackers: StackerABC):
         for n, stacker in enumerate(stackers):
+            if not issubclass(stacker.__class__, StackerABC):
+                # wdiget is directly passed. wrap the widget with stacker
+                stacker = self._stacker.hstack(stacker)
             configure_child_stacker(stacker, self.id, 0, 0)
             self._options['frame_ids'] += (stacker.frame_id,)
         return self

@@ -101,7 +101,7 @@ class MyTestCase(unittest.TestCase):
         stacker = Stacker()
 
         stacker.hstack(
-            w.PanedWindow('paned_window1').is_horizontal().stackers(
+            w.PanedWindow('paned_window1', stacker).is_horizontal().stackers(
                 stacker.hstack(
                     stacker.vstack(
                         w.Label('label1').text('Label1'),
@@ -128,7 +128,7 @@ class MyTestCase(unittest.TestCase):
         stacker = Stacker()
 
         stacker.hstack(
-            w.PanedWindow('paned_window1').is_horizontal().weights((1, 8)).stackers(
+            w.PanedWindow('paned_window1', stacker).is_horizontal().weights((1, 8)).stackers(
                 stacker.vstack(
                     stacker.hstack(
                         w.Label('label1').text('Label1'),
@@ -158,7 +158,7 @@ class MyTestCase(unittest.TestCase):
         stacker = Stacker()
 
         stacker.hstack(
-            w.NoteBook('paned_window1').frame_names(('A', 'B', 'C')).stackers(
+            w.NoteBook('paned_window1', stacker).frame_names(('A', 'B', 'C', 'D')).stackers(
                 stacker.vstack(
                     stacker.hstack(
                         w.Label('label1').text('Label1'),
@@ -184,6 +184,7 @@ class MyTestCase(unittest.TestCase):
                         w.Button('button5').text('Button5').command(lambda: print('button5')).width(10),
                     ),
                 ),
+                w.Canvas('canvas').color('light green'),
             ),
         )
         launch_app(stacker.view_model)
@@ -194,9 +195,9 @@ class MyTestCase(unittest.TestCase):
         stacker = Stacker()
 
         stacker.hstack(
-            w.PanedWindow('paned_window1').is_horizontal().weights((6, 1)).stackers(
+            w.PanedWindow('paned_window1', stacker).is_horizontal().weights((6, 1)).stackers(
                 stacker.hstack(
-                    w.NoteBook('notebook1').frame_names(('A', 'B', 'Tree')).stackers(
+                    w.NoteBook('notebook1', stacker).frame_names(('A', 'B', 'Tree')).stackers(
                         stacker.vstack(
                             stacker.hstack(
                                 w.Label('label1').text('Label1'),
@@ -327,7 +328,7 @@ class MyTestCase(unittest.TestCase):
 
         main_menu = ('Canvas', 'State', 'Macro')  # 'Template', 'State', 'Macro', 'Setting')
         stacker.vstack(
-            w.NoteBook('main_notebook').frame_names(main_menu).stackers(
+            w.NoteBook('main_notebook', stacker).frame_names(main_menu).stackers(
                 stacker.hstack(
                     w.PanedWindow('pw_canvas', stacker).is_horizontal().stackers(
                         canvas_controller(),
@@ -347,7 +348,7 @@ class MyTestCase(unittest.TestCase):
                         w.Button('macro_btn_set_args').text('set args'),
                         w.Button('macro_btn_set_kwargs®').text('set kwargs'),
                     ),
-                    w.PanedWindow('macro_paned_window').is_horizontal().stackers(
+                    w.PanedWindow('macro_paned_window', stacker).is_horizontal().stackers(
                         macro_buttons(),
                         stacker.hstack(
                             stacker.vstack(
