@@ -2,6 +2,14 @@ import abc
 
 
 class StackerABC(abc.ABC):
+    @abc.abstractmethod
+    def hstack(self, *elements):
+        pass
+
+    @abc.abstractmethod
+    def vstack(self, *elements):
+        pass
+
     @property
     @abc.abstractmethod
     def v_direction(self):

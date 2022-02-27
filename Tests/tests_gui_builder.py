@@ -317,9 +317,23 @@ class MyTestCase(unittest.TestCase):
                 ),
             )
 
-        main_menu = ('State', 'Macro')  # 'Template', 'State', 'Macro', 'Setting')
+        def canvas_controller():
+            return stacker.vstack(
+                stacker.hstack(
+                    w.Entry('entry_account_name').default_value('Account Name'),
+                    w.Button('btn_add_shape').text('Add'),
+                ),
+            )
+
+        main_menu = ('Canvas', 'State', 'Macro')  # 'Template', 'State', 'Macro', 'Setting')
         stacker.vstack(
             w.NoteBook('main_notebook').frame_names(main_menu).stackers(
+                stacker.hstack(
+                    w.PanedWindow('pw_canvas', stacker).is_horizontal().stackers(
+                        canvas_controller(),
+                        w.Canvas('canvas_main').color('white'),
+                    ),
+                ),
                 stacker.vstack(
                     w.TextBox('state_text'),
                 ),

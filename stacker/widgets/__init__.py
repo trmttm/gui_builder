@@ -81,13 +81,14 @@ class Entry(Widget):
 class PanedWindow(Widget):
     _is_vertical = 'is_vertical'
 
-    def __init__(self, widget_id: str):
+    def __init__(self, widget_id: str, stacker: StackerABC):
         Widget.__init__(self, widget_id)
         self._options = {
             self._is_vertical: True,
             'frame_ids': (),
             'weights': (),
         }
+        self._stacker = stacker
 
     def is_vertical(self):
         return self.set_options(self._is_vertical, True)
@@ -105,6 +106,11 @@ class PanedWindow(Widget):
                 row, col = n, 0
             else:
                 row, col = 0, n
+
+            if not issubclass(stacker.__class__, StackerABC):
+                # wdiget is directly passed. wrap the widget with stacker
+                stacker = self._stacker.hstack(stacker)
+
             configure_child_stacker(stacker, self.id, row, col)
 
             self._options['frame_ids'] += (stacker.frame_id,)
