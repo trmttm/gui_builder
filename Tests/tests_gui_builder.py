@@ -304,6 +304,19 @@ class MyTestCase(unittest.TestCase):
         from stacker import widgets as w
         stacker = Stacker()
 
+        def macro_buttons():
+            return stacker.vstack(
+                w.TreeView('tree_macro'),
+                stacker.hstack(
+                    w.Spacer(),
+                    w.Button('macro_tree_1').text('↑').width(3).command(lambda: print(('↑'))),
+                    w.Button('macro_tree_2').text('↓').width(3).command(lambda: print(('↓'))),
+                    w.Button('macro_tree_3').text('Copy').command(lambda: print('Copy')),
+                    w.Button('macro_tree_4').text('Delete').command(lambda: print('Delete')),
+                    w.Button('macro_tree_5').text('Clear').command(lambda: print('Clear')),
+                ),
+            )
+
         main_menu = ('State', 'Macro')  # 'Template', 'State', 'Macro', 'Setting')
         stacker.vstack(
             w.NoteBook('main_notebook').frame_names(main_menu).stackers(
@@ -321,9 +334,7 @@ class MyTestCase(unittest.TestCase):
                         w.Button('macro_btn_set_kwargs®').text('set kwargs'),
                     ),
                     w.PanedWindow('macro_paned_window').is_horizontal().stackers(
-                        stacker.vstack(
-                            w.TreeView('tree_macro'),
-                        ),
+                        macro_buttons(),
                         stacker.hstack(
                             stacker.vstack(
                                 w.Spacer(),
