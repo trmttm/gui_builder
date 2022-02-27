@@ -1,3 +1,4 @@
+import abc
 from typing import Tuple
 
 from .. import StackerABC
@@ -78,7 +79,13 @@ class Entry(Widget):
         return self.set_options('default_value', default_value)
 
 
-class PanedWindow(Widget):
+class WidgetSpecialFrameHolder(Widget):
+    @abc.abstractmethod
+    def stackers(self, *stackers: StackerABC):
+        pass
+
+
+class PanedWindow(WidgetSpecialFrameHolder):
     _is_vertical = 'is_vertical'
 
     def __init__(self, widget_id: str, stacker: StackerABC):
@@ -108,7 +115,7 @@ class PanedWindow(Widget):
                 row, col = 0, n
 
             if not issubclass(stacker.__class__, StackerABC):
-                # wdiget is directly passed. wrap the widget with stacker
+                # widget is directly passed. wrap the widget with stacker
                 stacker = self._stacker.hstack(stacker)
             configure_child_stacker(stacker, self.id, row, col)
 
@@ -117,7 +124,7 @@ class PanedWindow(Widget):
         return self
 
 
-class NoteBook(Widget):
+class NoteBook(WidgetSpecialFrameHolder):
     def __init__(self, widget_id: str, stacker):
         Widget.__init__(self, widget_id)
         self._options = {
@@ -129,7 +136,7 @@ class NoteBook(Widget):
     def stackers(self, *stackers: StackerABC):
         for n, stacker in enumerate(stackers):
             if not issubclass(stacker.__class__, StackerABC):
-                # wdiget is directly passed. wrap the widget with stacker
+                # widget is directly passed. wrap the widget with stacker
                 stacker = self._stacker.hstack(stacker)
             configure_child_stacker(stacker, self.id, 0, 0)
             self._options['frame_ids'] += (stacker.frame_id,)

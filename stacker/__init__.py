@@ -41,7 +41,7 @@ class Stacker(StackerABC):
         return self._frame_options
 
     @property
-    def children_stackers(self):
+    def children_stackers(self) -> List['Stacker']:
         return self._children_stackers
 
     @property

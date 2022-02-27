@@ -1,78 +1,124 @@
+from typing import Any
+from typing import Dict
+
+from .tree_root_to_leaf import Node
+
+
 def sort_view_model_for_paned_window(view_model: list) -> list:
-    """
-    1) PanedWindow and Notebook (PN, pn) widget model must be placed right after its parent frame_id
-    2) PanedWindow and Notebook's children frames are automatically created,
-    3) but we need to pass their frame_options in order to properly configure row and column.
-    """
-    # Preparation 1
-    pn_ids = []
-    pn_parents = set()
-    frame_id_to_frame_options = {}
+    # create Nodes and widget_model_dictionary
+    parent_id_to_children_widget_models: Dict[Any, list] = {'root': []}
+    parent_id_to_children_widget_ids: dict = {'root': []}
     widget_id_to_widget_model = {}
+    frame_id_to_frame_options = {}
+    pn_parents = set()
+
+    root = Node('root')
+    id_to_node = {'root': root, }
+    pn_ids = []
     for widget_model in view_model:
         parent_id = widget_model[0]
         widget_id = widget_model[1]
         widget_type = widget_model[2]
 
-        widget_id_to_widget_model[widget_id] = widget_model
-
         if widget_type in ['paned_window', 'notebook']:
             pn_ids.append(widget_id)
             pn_parents.add(parent_id)
-
         if widget_type == 'frame':
             frame_options: dict = widget_model[-1]['frame options']  # this logic looks so easy to break...
             frame_id_to_frame_options[widget_id] = frame_options
 
-    # Preparation 2
-    all_pn_children = []
-    pn_parent_to_pn_id = {}
-    pn_id_to_children_frames = {}
+        # build dictionary
+        if parent_id in parent_id_to_children_widget_models:
+            parent_id_to_children_widget_models[parent_id].append(widget_model)
+        else:
+            parent_id_to_children_widget_models[parent_id] = [widget_model]
+        if parent_id in parent_id_to_children_widget_ids:
+            parent_id_to_children_widget_ids[parent_id].append(widget_id)
+        else:
+            parent_id_to_children_widget_ids[parent_id] = [widget_id]
+        widget_id_to_widget_model[widget_id] = widget_model
+
+        # create Nodes
+        new_node = Node(widget_id)
+        id_to_node[widget_id] = new_node
+
     for widget_model in view_model:
         parent_id = widget_model[0]
         widget_id = widget_model[1]
-        if parent_id in pn_ids:
-            pn_child_frame_id = widget_id
-            pn_id = parent_id
 
-            all_pn_children.append(pn_child_frame_id)
+        node = id_to_node[widget_id]
+        parent_node = id_to_node[parent_id]
+        node.set_previous(parent_node)
+        parent_node.add_next(node)
 
-            if pn_id in pn_id_to_children_frames:
-                pn_id_to_children_frames[pn_id].append(pn_child_frame_id)
-            else:
-                pn_id_to_children_frames[pn_id] = [pn_child_frame_id]
-        if widget_id in pn_ids:
-            pn_id = widget_id
-            if parent_id in pn_parent_to_pn_id:
-                pn_parent_to_pn_id[parent_id].append(pn_id)
-            else:
-                pn_parent_to_pn_id[parent_id] = [pn_id]
+    # Identify leaves
+    leaves = []
+    all_nodes = tuple(id_to_node.values())
+    for node in all_nodes:
+        if node == 'root':
+            continue
+        if not node.next_nodes:
+            leaves.append(node)
 
-    # Sorting view_model
-    if pn_ids:
-        sorted_viewed_model = []
+    # Get all paths from root to leaves
+    complete_paths = []
+    for each_leaf in leaves:
+        path = [each_leaf.name]
+        parent_node = each_leaf.previous_node
+        while parent_node != 'root':
+            path.insert(0, parent_node.name)
+            parent_node = parent_node.previous_node
 
-        for widget_model in view_model:
-            widget_id = widget_model[1]
-            if widget_id not in pn_ids + all_pn_children:  # Ignore PanedWindows and their children
-                sorted_viewed_model.append(widget_model)
-            if widget_id in pn_parents:
-                parent_of_pn = widget_id
+        if path[0] != 'root':
+            path.insert(0, 'root')
+        complete_paths.append(path)
 
-                children_pn_ids = pn_parent_to_pn_id[parent_of_pn]
-                # Add children frame options
-                for pn_id in children_pn_ids:
-                    list_of_frame_options = []
-                    for pn_child_frame in pn_id_to_children_frames[pn_id]:
-                        list_of_frame_options.append(frame_id_to_frame_options[pn_child_frame])
+    already_inserted_widget_id = {'root'}
+    already_inserted_pair = set()
+    for pn_id in pn_ids:
+        already_inserted_widget_id.add(pn_id)  # pn_id's children frame are automatically created
 
-                    pn_widget_model = widget_id_to_widget_model[pn_id]
-                    options: dict = pn_widget_model[-1]
-                    additional_options = {'frame_options': list_of_frame_options, }
-                    options.update(additional_options)
-                    pw_widget_model_frame_options_added = pn_widget_model[:-1] + (options,)
+    sorted_view_model = []
+    for path in complete_paths:
+        for parent_id in path:
+            if parent_id not in already_inserted_widget_id:
+                parent_widget_model = widget_id_to_widget_model[parent_id]
 
-                    sorted_viewed_model.append(pw_widget_model_frame_options_added)
-    else:
-        sorted_viewed_model = view_model
-    return sorted_viewed_model
+                parent_of_parent = parent_widget_model[0]
+                p_id_to_ch_id = parent_id_to_children_widget_ids
+                parent_id_is_a_child_of_pn = parent_of_parent in pn_ids
+                has_no_pn_children = True not in tuple(c in pn_ids for c in p_id_to_ch_id.get(parent_id, ()))
+                parent_id_is_a_child_of_pn_and_it_has_no_pn_children = parent_id_is_a_child_of_pn and has_no_pn_children
+                has_already_been_added = (parent_of_parent, parent_id) in already_inserted_pair
+                if parent_id_is_a_child_of_pn_and_it_has_no_pn_children:
+                    pass  # Ignore
+                elif has_already_been_added:
+                    pass  # Ignore
+                elif parent_of_parent in pn_ids:
+                    pass  # Ignore
+                else:
+                    sorted_view_model.append(parent_widget_model)
+                    already_inserted_widget_id.add(parent_id)
+                    already_inserted_pair.add((parent_of_parent, parent_id))
+
+                widget_models = parent_id_to_children_widget_models.get(parent_id, ())
+                for widget_model in widget_models:
+                    parent_id = widget_model[0]
+                    widget_id = widget_model[1]
+
+                    if widget_id in pn_ids:
+                        pn_id = widget_id
+                        list_of_frame_options = []
+                        for pn_child_frame in parent_id_to_children_widget_ids[pn_id]:
+                            list_of_frame_options.append(frame_id_to_frame_options[pn_child_frame])
+
+                        options: dict = widget_id_to_widget_model[pn_id][-1]
+                        additional_options = {'frame_options': list_of_frame_options, }
+                        options.update(additional_options)
+                        widget_model = widget_model[:-1] + (options,)
+
+                    sorted_view_model.append(widget_model)
+                    already_inserted_widget_id.add(parent_id)
+                    already_inserted_pair.add((parent_id, widget_id))
+
+    return sorted_view_model

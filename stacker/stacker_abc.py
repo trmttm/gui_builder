@@ -1,4 +1,5 @@
 import abc
+from typing import List
 
 
 class StackerABC(abc.ABC):
@@ -26,7 +27,7 @@ class StackerABC(abc.ABC):
 
     @property
     @abc.abstractmethod
-    def children_stackers(self):
+    def children_stackers(self) -> List['StackerABC']:
         pass
 
     @property
