@@ -2,4 +2,7 @@ import abc
 
 
 class SpacerABC(abc.ABC):
-    pass
+    @property
+    @abc.abstractmethod
+    def adjustment(self) -> int:
+        pass

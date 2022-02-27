@@ -299,6 +299,56 @@ class MyTestCase(unittest.TestCase):
         )
         launch_app(stacker.view_model)
 
+    def test_fmide_gui(self):
+        from stacker import Stacker
+        from stacker import widgets as w
+        stacker = Stacker()
+
+        main_menu = ('State', 'Macro')  # 'Template', 'State', 'Macro', 'Setting')
+        stacker.vstack(
+            w.NoteBook('main_notebook').frame_names(main_menu).stackers(
+                stacker.vstack(
+                    w.TextBox('state_text'),
+                ),
+                stacker.vstack(
+                    stacker.hstack(
+                        w.Label('macro_label_record_macro').text('Record Macro:'),
+                        w.CheckButton('macro_check_btn_record_macro').value(False),
+                        w.Spacer(),
+                        w.Entry('macro_entry_record_macro').default_value('New Macro Name'),
+                        w.Button('macro_btn_set_name').text('set name'),
+                        w.Button('macro_btn_set_args').text('set args'),
+                        w.Button('macro_btn_set_kwargs®').text('set kwargs'),
+                    ),
+                    w.PanedWindow('macro_paned_window').is_horizontal().stackers(
+                        stacker.vstack(
+                            w.TreeView('tree_macro'),
+                        ),
+                        stacker.hstack(
+                            stacker.vstack(
+                                w.Spacer(),
+                                w.Button('btn_macro_right').width(2).text('->').command(
+                                    lambda: print('macro_right')),
+                                w.Button('btn_macro_left').width(2).text('<-').command(lambda: print('macro_left')),
+                                w.Spacer(),
+                            ),
+                            stacker.vstack(
+                                w.TreeView('tree_saved_macros'),
+                                stacker.hstack(
+                                    w.Button('btn_delete_macro_file').text('Delete').command(
+                                        lambda: print('del_mac')),
+                                ),
+                            ),
+                            w.Spacer().adjust(-1),
+                        ),
+                    ),
+                    w.Spacer().adjust(-1),
+                ),
+            ),
+        )
+
+        launch_app(stacker.view_model)
+
 
 if __name__ == '__main__':
     unittest.main()

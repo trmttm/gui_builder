@@ -8,20 +8,7 @@ from .stacker_abc import StackerABC
 from .widget_abc import WidgetABC
 
 
-def configure_frame_of_new_stacker_for_later_command_execution(new_stacker: StackerABC, direction, space: list):
-    fr_options = tk_interface.frame_options
-    if not space:
-        space = [0]
-    if direction == new_stacker.v_direction:
-        row_space, col_space = space, [0]
-    else:
-        row_space, col_space = [0], space
-    rows_and_weights = tuple(row_space), tuple(1 for _ in row_space)
-    cols_and_weights = tuple(col_space), tuple(1 for _ in col_space)
-    new_stacker.set_frame_options(fr_options(rows_and_weights, cols_and_weights, ))
-
-
-def register_elements(direction, elements, new_stacker: StackerABC, space):
+def register_elements(direction, elements, new_stacker: StackerABC, space: list):
     for n, element in enumerate(elements):
         row, col = get_widget_or_frame_row_col(direction, n, new_stacker)
         register_spacer(space, n, element)
@@ -35,7 +22,7 @@ def get_widget_or_frame_row_col(direction, n, new_stacker: StackerABC):
 
 def register_spacer(space: list, n: int, element):
     if issubclass(element.__class__, SpacerABC):
-        space.append(n)
+        space.append(n + element.adjustment)
 
 
 def register_stacker(row: int, col: int, element: StackerABC, new_stacker: StackerABC):
@@ -60,6 +47,19 @@ def register_widgets(row: int, col: int, element: WidgetABC, new_stacker: Stacke
         frame_id = new_stacker.frame_id
         widget_model = f(frame_id, w.id, w.widget_type, row, row, col, col, 'nsew', w.pad_xy, **w.options)
         new_stacker.add_widget_model(widget_model)
+
+
+def configure_frame(new_stacker: StackerABC, direction, space: list):
+    fr_options = tk_interface.frame_options
+    if not space:
+        space = [0]
+    if direction == new_stacker.v_direction:
+        row_space, col_space = space, [0]
+    else:
+        row_space, col_space = [0], space
+    rows_and_weights = tuple(row_space), tuple(1 for _ in row_space)
+    cols_and_weights = tuple(col_space), tuple(1 for _ in col_space)
+    new_stacker.set_frame_options(fr_options(rows_and_weights, cols_and_weights, ))
 
 
 def get_sorted_frames(children_stackers: List[StackerABC]) -> dict:

@@ -3,8 +3,8 @@ from typing import Union
 
 from stacker.spacer_abc import SpacerABC
 from stacker.widget_abc import WidgetABC
-from . import implementation
 from . import handle_other_frame_holders
+from . import implementation
 from .stacker_abc import StackerABC
 
 
@@ -99,7 +99,7 @@ class Stacker(StackerABC):
         new_stacker = self._instantiate_and_link_new_stacker()
         space = []
         implementation.register_elements(direction, elements, new_stacker, space)
-        implementation.configure_frame_of_new_stacker_for_later_command_execution(new_stacker, direction, space)
+        implementation.configure_frame(new_stacker, direction, space)
         return new_stacker
 
     def _instantiate_and_link_new_stacker(self) -> 'Stacker':

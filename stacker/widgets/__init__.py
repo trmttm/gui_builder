@@ -48,6 +48,15 @@ class Spacer(Widget, SpacerABC):
         Widget.__init__(self, 'spacer')
         self._options['text'] = ''
         self.width(0)
+        self._data = {'adjustment': 0}
+
+    def adjust(self, n):
+        self._data['adjustment'] = n
+        return self
+
+    @property
+    def adjustment(self) -> int:
+        return self._data['adjustment']
 
 
 class WidgetWithText(Widget):
