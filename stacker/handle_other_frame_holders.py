@@ -85,14 +85,8 @@ def sort_view_model_for_paned_window(view_model: list) -> list:
                 parent_widget_model = widget_id_to_widget_model[parent_id]
 
                 parent_of_parent = parent_widget_model[0]
-                p_id_to_ch_id = parent_id_to_children_widget_ids
-                parent_id_is_a_child_of_pn = parent_of_parent in pn_ids
-                has_no_pn_children = True not in tuple(c in pn_ids for c in p_id_to_ch_id.get(parent_id, ()))
-                parent_id_is_a_child_of_pn_and_it_has_no_pn_children = parent_id_is_a_child_of_pn and has_no_pn_children
                 has_already_been_added = (parent_of_parent, parent_id) in already_inserted_pair
-                if parent_id_is_a_child_of_pn_and_it_has_no_pn_children:
-                    pass  # Ignore
-                elif has_already_been_added:
+                if has_already_been_added:
                     pass  # Ignore
                 elif parent_of_parent in pn_ids:
                     pass  # Ignore
