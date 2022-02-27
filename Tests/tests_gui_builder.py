@@ -318,21 +318,63 @@ class MyTestCase(unittest.TestCase):
                 ),
             )
 
+        def four_horizontal_buttons(t1, t2, t3, t4, prefix):
+            return stacker.hstack(
+                w.Button(f'{prefix}_{t1}').text(t1).width(3).command(lambda: print(t1)),
+                w.Button(f'{prefix}_{t2}').text(t2).width(3).command(lambda: print(t2)),
+                w.Button(f'{prefix}_{t3}').text(t3).width(3).command(lambda: print(t3)),
+                w.Button(f'{prefix}_{t4}').text(t4).width(3).command(lambda: print(t4)),
+                w.Spacer().adjust(-4),
+                w.Spacer().adjust(-4),
+                w.Spacer().adjust(-4),
+                w.Spacer().adjust(-4),
+            )
+
+        def notebook_canvas_status():
+            frame_names = ('Ac', 'Pr', 'WS', 'CN',)
+            return w.NoteBook('note_book_canvas_status', stacker).frame_names(frame_names).stackers(
+                stacker.vstack(
+                    w.TreeView(f'tree_{frame_names[0]}'),
+                    stacker.hstack(
+                        w.Button('btn_Ac_up').text('↑').command(lambda: print('↑')),
+                        w.Button('btn_Ac_down').text('↓').command(lambda: print('↓')),
+                        w.Button('btn_Ac_space').text('[_]').command(lambda: print('[_]')),
+                    ),
+                ),
+                w.TreeView(f'tree_{frame_names[1]}'),
+                w.TreeView(f'tree_{frame_names[2]}'),
+                w.TreeView(f'tree_{frame_names[3]}'),
+            )
+
         def canvas_controller():
             return stacker.vstack(
                 stacker.hstack(
-                    w.Entry('entry_account_name').default_value('Account Name'),
-                    w.Button('btn_add_shape').text('Add'),
+                    w.Entry('entry_account_name').default_value('Account Name').width(4),
+                    w.Button('btn_add_shape').text('Add').width(5),
                 ),
+                stacker.vstack(
+                    four_horizontal_buttons('+', '-', 'x', '/', 'btn_operator'),
+                    four_horizontal_buttons('BB', 'max', 'min', 'ave', 'btn_operator'),
+                    four_horizontal_buttons('<=', '<', '>=', '>', 'btn_operator'),
+                    four_horizontal_buttons('=', '^', 'abc', 'ana', 'btn_operator'),
+                    four_horizontal_buttons('↩︎', '↪︎', 'New', 'Rel', 'btn_operator'),
+                    four_horizontal_buttons('Del', 'XL', 'IE', 'Mod', 'btn_operator'),
+                    four_horizontal_buttons('←', '↑', '↓', '→', 'btn_operator'),
+                    four_horizontal_buttons('-', '=', '|', '||', 'btn_operator'),
+                    four_horizontal_buttons('>w<', '<W>', '-w', '+W', 'btn_operator'),
+                    notebook_canvas_status(),
+                    w.Spacer().adjust(-1),
+                ),
+                w.Spacer().adjust(-1),
             )
 
         main_menu = ('Canvas', 'State', 'Macro')  # 'Template', 'State', 'Macro', 'Setting')
         stacker.vstack(
             w.NoteBook('main_notebook', stacker).frame_names(main_menu).stackers(
                 stacker.hstack(
-                    w.PanedWindow('pw_canvas', stacker).is_horizontal().stackers(
+                    w.PanedWindow('pw_canvas', stacker).is_horizontal().weights((0, 1)).stackers(
                         canvas_controller(),
-                        w.Canvas('canvas_main').color('white'),
+                        w.Canvas('canvas_main').color('pink'),
                     ),
                 ),
                 stacker.vstack(
@@ -346,7 +388,7 @@ class MyTestCase(unittest.TestCase):
                         w.Entry('macro_entry_record_macro').default_value('New Macro Name'),
                         w.Button('macro_btn_set_name').text('set name'),
                         w.Button('macro_btn_set_args').text('set args'),
-                        w.Button('macro_btn_set_kwargs®').text('set kwargs'),
+                        w.Button('macro_btn_set_kwargs').text('set kwargs'),
                     ),
                     w.PanedWindow('macro_paned_window', stacker).is_horizontal().stackers(
                         macro_buttons(),
