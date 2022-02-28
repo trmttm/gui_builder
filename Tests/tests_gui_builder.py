@@ -330,6 +330,20 @@ class MyTestCase(unittest.TestCase):
                 w.Spacer().adjust(-4),
             )
 
+        def label_entry(label_id, entry_id, label_text, ):
+            return stacker.hstack(
+                w.Label(label_id).text(label_text).padding(5, 0).align('e').width(6),
+                w.Entry(entry_id).padding(5, 0),
+                w.Spacer().adjust(-1),
+            )
+
+        def label_combobox(label_id, combo_box_id, label_text, ):
+            return stacker.hstack(
+                w.Label(label_id).text(label_text).padding(5, 0).align('e').width(6),
+                w.ComboBox(combo_box_id).padding(5, 0).width(10),
+                w.Spacer().adjust(-1),
+            )
+
         def notebook_canvas_status():
             frame_names = ('Ac', 'Pr', 'WS', 'CN',)
             return w.NoteBook('note_book_canvas_status', stacker).frame_names(frame_names).stackers(
@@ -341,7 +355,29 @@ class MyTestCase(unittest.TestCase):
                         w.Button('btn_Ac_space').text('[_]').command(lambda: print('[_]')),
                     ),
                 ),
-                w.TreeView(f'tree_{frame_names[1]}'),
+                stacker.vstack(
+                    label_entry('label_state_name', 'entry_state_name', 'Text:'),
+                    label_entry('label_state_x', 'entry_state_x', 'x:'),
+                    label_entry('label_state_y', 'entry_state_y', 'y:'),
+                    label_entry('label_state_width', 'entry_state_width', 'width:'),
+                    label_entry('label_state_height', 'entry_state_height', 'height:'),
+                    label_entry('label_state_Sheet', 'entry_state_Sheet', 'Sheet:'),
+                    label_entry('label_stateΔx', 'entry_stateΔx', 'Δx:'),
+                    label_entry('label_stateΔy', 'entry_stateΔy', 'Δy:'),
+                    label_entry('label_state_id', 'entry_state_id', 'id:'),
+                    label_entry('label_state_UOM', 'entry_state_UOM', 'UOM:'),
+                    label_combobox('cb_box_state_Format', 'cb_box_state_Format', 'Format:'),
+                    label_combobox('cb_box_state_#', 'cb_box_state_#', '#:'),
+                    stacker.hstack(
+                        w.Label('label_vertical').text('Vertical:').padding(5, 0).width(6),
+                        w.CheckButton('check_btn_vertical').value(False),
+                        w.Entry('entry_vertical').width(4),
+                        w.Button('btn_vertical_add').text('Add').width(4),
+                        w.Button('btn_vertical_remove').text('Rem').width(4),
+                        w.Spacer().adjust(-5),
+                    ),
+                    w.Spacer(),
+                ),
                 w.TreeView(f'tree_{frame_names[2]}'),
                 w.TreeView(f'tree_{frame_names[3]}'),
             )

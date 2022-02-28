@@ -66,7 +66,8 @@ class WidgetWithText(Widget):
 
 
 class Label(WidgetWithText):
-    pass
+    def align(self, nsew: str):
+        return self.set_options('anchor', nsew)
 
 
 class Button(WidgetWithText):
