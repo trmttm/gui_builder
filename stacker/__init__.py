@@ -32,6 +32,9 @@ class Stacker(StackerABC):
         self._level = 0
         self._frame_to_stacker_dictionary = {}
 
+    def set_frame_id(self, frame_id):
+        self._frame_id = frame_id
+
     @property
     def v_direction(self):
         return self._v_direction

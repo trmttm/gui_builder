@@ -506,5 +506,58 @@ class MyTestCase(unittest.TestCase):
 
         launch_app(stacker.view_model)
 
+    def test_frame_switcher(self):
+        from view_tkinter import View
+        from stacker import Stacker
+        from stacker import widgets as w
+
+        app = View()
+        stacker = Stacker()
+
+        frames_switchable1 = []
+        frames_switchable2 = []
+
+        def switch_frame1(n):
+            index_ = n - 1
+            frame_selected = frames_switchable1[index_]
+            app.switch_frame(frame_selected)
+
+        def switch_frame2(n):
+            index_ = n - 1
+            frame_selected = frames_switchable2[index_]
+            app.switch_frame(frame_selected)
+
+        stacker.vstack(
+            w.FrameSwitcher('frame_stacker_id1', stacker, frames_switchable1).stackers(
+                w.Canvas('canvas1').color('light green'),
+                w.Canvas('canvas2').color('white'),
+                w.Canvas('canvas3').color('orange'),
+            ),
+            w.FrameSwitcher('frame_stacker_id2', stacker, frames_switchable2).stackers(
+                stacker.hstack(w.Spacer(), w.Label('label1').text('Frame1'), w.Spacer()),
+                stacker.hstack(w.Spacer(), w.Label('label2').text('Frame2'), w.Spacer()),
+                stacker.hstack(w.Spacer(), w.Label('label3').text('Frame3'), w.Spacer()),
+            ),
+            stacker.hstack(
+                w.Spacer(),
+                w.Button('btn_switcher1').width(15).text('Switch Canvas 1').command(lambda: switch_frame1(1)),
+                w.Button('btn_switcher2').width(15).text('Switch Canvas 2').command(lambda: switch_frame1(2)),
+                w.Button('btn_switcher3').width(15).text('Switch Canvas 3').command(lambda: switch_frame1(3)),
+                w.Spacer(),
+            ),
+            stacker.hstack(
+                w.Spacer(),
+                w.Button('btn_switcher4').width(15).text('Switch Label 1').command(lambda: switch_frame2(1)),
+                w.Button('btn_switcher5').width(15).text('Switch Label 2').command(lambda: switch_frame2(2)),
+                w.Button('btn_switcher6').width(15).text('Switch Label 3').command(lambda: switch_frame2(3)),
+                w.Spacer(),
+            ),
+        )
+
+        view_model = stacker.view_model
+        app.add_widgets(view_model)
+        app.launch_app()
+
+
 if __name__ == '__main__':
     unittest.main()

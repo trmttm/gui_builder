@@ -20,11 +20,11 @@ def sort_view_model_for_paned_window(view_model: list) -> list:
         widget_id = widget_model[1]
         widget_type = widget_model[2]
 
-        if widget_type in ['paned_window', 'notebook']:
+        if widget_type in ['paned_window', 'notebook', ]:
             pn_ids.append(widget_id)
             pn_parents.add(parent_id)
         if widget_type == 'frame':
-            frame_options: dict = widget_model[-1]['frame options']  # this logic looks so easy to break...
+            frame_options: dict = widget_model[-1].get('frame options', {})  # this logic looks so easy to break...
             frame_id_to_frame_options[widget_id] = frame_options
 
         # build dictionary

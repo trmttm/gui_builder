@@ -150,6 +150,29 @@ class NoteBook(WidgetSpecialFrameHolder):
         return self.set_options('frame_names', frame_names)
 
 
+class FrameSwitcher(Widget):
+    def __init__(self, widget_id: str, stacker, switchable_frames_pass_me_an_empty_frame: list):
+        Widget.__init__(self, widget_id)
+        self._options = {
+            'frame options': {'rows_and_weights': ((0,), (1,)),
+                              'cols_and_weights': ((0,), (1,)),
+                              'propagate': True}}
+        self._stacker = stacker
+        self._switchable_frames = switchable_frames_pass_me_an_empty_frame
+
+    def stackers(self, *stackers: StackerABC):
+        for n, stacker in enumerate(stackers):
+            if not issubclass(stacker.__class__, StackerABC):
+                # widget is directly passed. wrap the widget with stacker
+                stacker = self._stacker.hstack(stacker)
+
+            self._switchable_frames.append(stacker.frame_id)
+            configure_child_stacker(stacker, self.id, 0, 0)
+            stacker.set_row(0)
+            stacker.set_col(0)
+        return self
+
+
 class Canvas(Widget):
     def color(self, color: str):
         return self.set_options('bg', color)
@@ -231,4 +254,5 @@ widget_dictionary = {
     RadioButton: 'radio_button',
     CheckButton: 'check_button',
     ComboBox: 'combo_box',
+    FrameSwitcher: 'frame',
 }

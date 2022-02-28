@@ -4,6 +4,10 @@ from typing import List
 
 class StackerABC(abc.ABC):
     @abc.abstractmethod
+    def set_frame_id(self, frame_id):
+        pass
+
+    @abc.abstractmethod
     def hstack(self, *elements):
         pass
 
