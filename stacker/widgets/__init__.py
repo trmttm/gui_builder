@@ -74,6 +74,9 @@ class Button(WidgetWithText):
     def command(self, command) -> 'Button':
         return self.set_options('command', command)
 
+    def wh_padding(self, w, n, s, e):
+        return self.set_options('padding', (w, n, e, s))
+
 
 class Entry(Widget):
     def default_value(self, default_value) -> 'Entry':

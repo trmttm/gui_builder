@@ -8,6 +8,14 @@ def launch_app(view_model):
     app.launch_app()
 
 
+def label_entry(stacker, w, label_id, entry_id, label_text, ):
+    return stacker.hstack(
+        w.Label(label_id).text(label_text).padding(5, 0).align('w').width(6),
+        w.Entry(entry_id).padding(5, 0),
+        w.Spacer().adjust(-1),
+    )
+
+
 class MyTestCase(unittest.TestCase):
     def test_vstacker(self):
         from Tests.concepts import vstacker
@@ -453,6 +461,50 @@ class MyTestCase(unittest.TestCase):
 
         launch_app(stacker.view_model)
 
+    def test_work_automator_gui(self):
+        from stacker import Stacker
+        from stacker import widgets as w
+        stacker = Stacker()
+
+        notebook_tabs = ('Add', 'Calendar',)
+
+        def main_tab_one_add_form():
+            bp = 0, 20, 20, 0
+            frame_names = ('Properties', 'Notes', 'Files')
+            return stacker.vstack(
+                stacker.hstack(
+                    w.Button('add_Milestone').text('Add Milestone').wh_padding(*bp).command(lambda: print('Milestone')),
+                    w.Button('add_Task').text('Add Task').wh_padding(*bp).command(lambda: print('Add Task')),
+                    w.Spacer().adjust(-2),
+                    w.Spacer().adjust(-2),
+                ),
+                w.NoteBook('note_book_add', stacker).frame_names(frame_names).stackers(
+                    stacker.vstack(
+                        label_entry(stacker, w, 'label_add_form_name', 'entry_add_form_name', 'Name:'),
+                        label_entry(stacker, w, 'label_add_due', 'entry_add_due', 'Due:'),
+                        label_entry(stacker, w, 'label_add_duration', 'entry_add_duration', 'Duration:'),
+                        label_entry(stacker, w, 'label_add_Owner', 'entry_add_Owner', 'Owner:'),
+                        w.Spacer(),
+                    ),
+                    w.TextBox('add_text').width(10).padding(10, 0),
+                    w.TreeView('add_file_tree').padding(10, 0),
+                ),
+                w.Spacer().adjust(-1),
+            )
+
+        def main_tab_one():
+            return w.PanedWindow('pw_tab_one', stacker).is_horizontal().weights((0, 1)).stackers(
+                main_tab_one_add_form(),
+                w.Canvas('canvas_tab_one').color('light yellow'),
+            )
+
+        stacker.vstack(
+            w.NoteBook('note_book_top', stacker).frame_names(notebook_tabs).stackers(
+                main_tab_one(),
+            ),
+        )
+
+        launch_app(stacker.view_model)
 
 if __name__ == '__main__':
     unittest.main()
