@@ -471,6 +471,11 @@ class MyTestCase(unittest.TestCase):
         def main_tab_one_add_form():
             bp = 0, 20, 20, 0
             frame_names = ('Properties', 'Notes', 'Files')
+            switchable_frames = []
+
+            def switch_frame(frame_index):
+                app.switch_frame(switchable_frames[frame_index])
+
             return stacker.vstack(
                 stacker.hstack(
                     w.Button('add_Milestone').text('Add Milestone').wh_padding(*bp).command(lambda: print('Milestone')),
@@ -478,7 +483,8 @@ class MyTestCase(unittest.TestCase):
                     w.Spacer().adjust(-2),
                     w.Spacer().adjust(-2),
                 ),
-                w.NoteBook('note_book_add', stacker).frame_names(frame_names).stackers(
+                w.FrameSwitcher('frame_switcher', stacker, switchable_frames).stackers(
+                    # w.NoteBook('note_book_add', stacker).frame_names(frame_names).stackers(
                     stacker.vstack(
                         label_entry(stacker, w, 'label_add_form_name', 'entry_add_form_name', 'Name:'),
                         label_entry(stacker, w, 'label_add_due', 'entry_add_due', 'Due:'),
@@ -489,7 +495,12 @@ class MyTestCase(unittest.TestCase):
                     w.TextBox('add_text').width(10).padding(10, 0),
                     w.TreeView('add_file_tree').padding(10, 0),
                 ),
-                w.Spacer().adjust(-1),
+                stacker.hstack(
+                    w.Button('btn_swithcer').text('Property').command(lambda: switch_frame(0)),
+                    w.Button('btn_swithcer').text('Text').command(lambda: switch_frame(1)),
+                    w.Button('btn_swithcer').text('Tree').command(lambda: switch_frame(2)),
+                ),
+                w.Spacer().adjust(-2),
             )
 
         def main_tab_one():
@@ -504,7 +515,11 @@ class MyTestCase(unittest.TestCase):
             ),
         )
 
-        launch_app(stacker.view_model)
+        from view_tkinter import View
+        app = View()
+        view_model = stacker.view_model
+        app.add_widgets(view_model)
+        app.launch_app()
 
     def test_frame_switcher(self):
         from view_tkinter import View
