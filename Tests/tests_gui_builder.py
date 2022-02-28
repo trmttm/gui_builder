@@ -483,6 +483,13 @@ class MyTestCase(unittest.TestCase):
                     w.Spacer().adjust(-2),
                     w.Spacer().adjust(-2),
                 ),
+                stacker.hstack(
+                    w.Spacer(),
+                    w.Button('btn_swithcer').text('Pr').width(2).command(lambda: switch_frame(0)),
+                    w.Button('btn_swithcer').text('txt').width(2).command(lambda: switch_frame(1)),
+                    w.Button('btn_swithcer').text('Tr').width(2).command(lambda: switch_frame(2)),
+                    w.Spacer(),
+                ),
                 w.FrameSwitcher('frame_switcher', stacker, switchable_frames).stackers(
                     # w.NoteBook('note_book_add', stacker).frame_names(frame_names).stackers(
                     stacker.vstack(
@@ -495,12 +502,7 @@ class MyTestCase(unittest.TestCase):
                     w.TextBox('add_text').width(10).padding(10, 0),
                     w.TreeView('add_file_tree').padding(10, 0),
                 ),
-                stacker.hstack(
-                    w.Button('btn_swithcer').text('Property').command(lambda: switch_frame(0)),
-                    w.Button('btn_swithcer').text('Text').command(lambda: switch_frame(1)),
-                    w.Button('btn_swithcer').text('Tree').command(lambda: switch_frame(2)),
-                ),
-                w.Spacer().adjust(-2),
+                w.Spacer().adjust(-1),
             )
 
         def main_tab_one():
