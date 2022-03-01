@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(
-    name='guil_builder',
+    name='gui_builder',
     version='',
     packages=['stacker', 'stacker.widgets'],
     url='',
