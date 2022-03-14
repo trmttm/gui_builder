@@ -20,7 +20,7 @@ def get_widget_or_frame_row_col(direction, n, new_stacker: StackerABC):
     return (n, 0) if (direction == new_stacker.v_direction) else (0, n)
 
 
-def register_spacer(space: list, n: int, element):
+def register_spacer(space: list, n: int, element:SpacerABC):
     if issubclass(element.__class__, SpacerABC):
         space.append(n + element.adjustment)
 

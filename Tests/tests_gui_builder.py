@@ -575,6 +575,121 @@ class MyTestCase(unittest.TestCase):
         app.add_widgets(view_model)
         app.launch_app()
 
+    def test_ui_ludo_mom(self):
+        from view_tkinter import View
+        from stacker import Stacker
+        from stacker import widgets as w
+
+        ### Data structure
+        categories = (
+            '商品製造',
+            '設備投資',
+            '売上',
+            '借入',
+            '出資',
+            '配当',
+        )
+
+        response_model_gui0 = {
+            'account_ids': [0, 1, 2],
+            'account_names': {0: '販売数量', 1: '販売単価', 2: '売上高'},
+            'uoms': {0: 'ton', 1: '$/ton', 2: '$'},
+            'input_values': {0: [1, 2, 3], 1: [4, 5, 6], },
+            'input_min_max': {0: (0, 10), 1: (0, 10), }
+        }
+        response_model_gui1 = {
+            'account_ids': [3, 4, 5],
+            'account_names': {3: '販売数量', 4: '原価', 5: '売上原価'},
+            'uoms': {3: 'kg', 4: '$/kg', 5: '$'},
+            'input_values': {3: [1, 2, 3], 4: [4, 5, 6], },
+            'input_min_max': {3: (0, 10), 4: (0, 10), }
+        }
+        response_model_gui2 = {
+            'account_ids': [6, 7, 8],
+            'account_names': {6: 'A', 7: 'B', 8: 'C'},
+            'uoms': {6: 'kg', 7: 'JPY/kg', 8: 'JPY'},
+            'input_values': {6: [1, 2, 3], 7: [4, 5, 6], },
+            'input_min_max': {6: (0, 10), 7: (0, 10), }
+        }
+        response_models = [response_model_gui0, response_model_gui1, response_model_gui2]
+
+        app = View()
+        stacker = Stacker()
+
+        frames_switchable = []
+
+        def switch_frame(n):
+            index_ = n
+            try:
+                frame_selected = frames_switchable[index_]
+            except IndexError:
+                frame_selected = frames_switchable[0]
+            app.switch_frame(frame_selected)
+
+        bp = 0, 20, 20, 0
+
+        # Category Buttons
+        category_buttons_elements = []
+        for n, category in enumerate(categories):
+            btn = w.Button(f'btn_category_{n}').text(categories[n]).wh_padding(*bp).command(lambda i=n: switch_frame(i))
+            category_buttons_elements.append(btn)
+        category_buttons_elements.append(w.Spacer())
+        category_buttons = stacker.vstack(*tuple(category_buttons_elements))
+
+        # Response Model GUI
+        response_model_elements = []
+        for request_model in response_models:
+            vertical_elements_in_a_response_model = []
+            account_ids = request_model.get('account_ids')
+            account_names = request_model.get('account_names')
+            uoms = request_model.get('uoms')
+            input_values = request_model.get('input_values')
+            input_min_max = request_model.get('input_min_max')
+            for account_id in account_ids:
+                horizontal_elements = []
+                name = account_names.get(account_id)
+                uom = uoms.get(account_id)
+
+                horizontal_elements.append(w.Label(f'lbl_{account_id}').width(20).text(f'アカウント名:{name}'))
+                horizontal_elements.append(w.Entry(f'entry_{account_id}').default_value(name))
+                horizontal_elements.append(w.Label(f'lbl_uom_{account_id}').width(10).text('単位名:').width(5))
+                horizontal_elements.append(w.Entry(f'entry_uom_{account_id}').default_value(uom).width(10))
+
+                if account_id in input_values:
+                    input_id = account_id
+                    values = input_values.get(input_id)
+                    input_min, input_max = input_min_max.get(input_id)
+
+                vertical_elements_in_a_response_model.append(tuple(horizontal_elements))
+            response_model_elements.append(tuple(vertical_elements_in_a_response_model))
+
+        def user_input_frames():
+            vstacks = []
+            for vertical_elements in response_model_elements:
+                hstacks = []
+                for horizontal_elements in vertical_elements:
+                    horizontal_elements += (w.Spacer(),)
+                    hstacks.append(stacker.hstack(*horizontal_elements))
+                hstacks.append(w.Spacer())
+                vstacks.append(stacker.vstack(*tuple(hstacks)))
+            return tuple(vstacks)
+
+        stacker.hstack(
+            w.PanedWindow('pw_01', stacker).is_horizontal().weights((0, 1, 1)).stackers(
+                category_buttons,
+                w.FrameSwitcher('frame_switcher_01', stacker, frames_switchable).stackers(*user_input_frames(), ),
+                w.NoteBook('nb_state', stacker).frame_names(('Tree', 'B')).stackers(
+                    w.TreeView('tree_01'),
+                    w.TreeView('tree_02'),
+                ),
+            ),
+
+        )
+
+        view_model = stacker.view_model
+        app.add_widgets(view_model)
+        app.launch_app()
+
 
 if __name__ == '__main__':
     unittest.main()
