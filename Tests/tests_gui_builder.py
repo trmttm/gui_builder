@@ -626,7 +626,7 @@ class MyTestCase(unittest.TestCase):
                 frame_selected = frames_switchable[0]
             app.switch_frame(frame_selected)
 
-        bp = 0, 20, 20, 0
+        bp = 0, 0, 0, 0
 
         # Category Buttons
         category_buttons_elements = []
