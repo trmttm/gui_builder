@@ -3,7 +3,6 @@ from typing import Dict
 
 from .tree_root_to_leaf import Node
 
-
 def sort_view_model_for_paned_window(view_model: list) -> list:
     # create Nodes and widget_model_dictionary
     parent_id_to_children_widget_models: Dict[Any, list] = {'root': []}
@@ -102,11 +101,9 @@ def sort_view_model_for_paned_window(view_model: list) -> list:
 
                     if widget_id in pn_ids:
                         pn_id = widget_id
-                        list_of_frame_options = []
-                        for pn_child_frame in parent_id_to_children_widget_ids[pn_id]:
-                            list_of_frame_options.append(frame_id_to_frame_options[pn_child_frame])
-
                         options: dict = widget_id_to_widget_model[pn_id][-1]
+                        frame_ids = options['frame_ids']
+                        list_of_frame_options = [frame_id_to_frame_options[frame_id] for frame_id in frame_ids]
                         additional_options = {'frame_options': list_of_frame_options, }
                         options.update(additional_options)
                         widget_model = widget_model[:-1] + (options,)

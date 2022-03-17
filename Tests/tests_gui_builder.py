@@ -690,6 +690,123 @@ class MyTestCase(unittest.TestCase):
         app.add_widgets(view_model)
         app.launch_app()
 
+    def test_fmIDE_states(self):
+        from view_tkinter import View
+        from stacker import Stacker
+        from stacker import widgets as w
+
+        app = View()
+        stacker = Stacker()
+
+        stacker.hstack(
+            w.PanedWindow('pw_state', stacker).is_horizontal().weights((0, 1)).stackers(
+                stacker.vstack(
+                    w.Button('btn_state_shape_id').text('Shape ID'),
+                    w.Button('btn_state_connection').text('Connections'),
+                    w.Button('btn_state_formula').text('Formula'),
+                    w.Button('btn_state_worksheets').text('Worksheets'),
+                    w.Button('btn_state_inputs').text('Inputs'),
+                    w.Spacer(),
+                ),
+                stacker.hstack(
+                    w.TreeView('tree_state'),
+                ),
+            )
+        )
+
+        view_model = stacker.view_model
+        app.add_widgets(view_model)
+        app.launch_app()
+
+    def test_fmdIDE_macro_builder(self):
+        from view_tkinter import View
+        from stacker import Stacker
+        from stacker import widgets as w
+
+        app = View()
+        stacker = Stacker()
+
+        btn_padding = 0, 20, 20, 0
+        action_buttons = stacker.vstack(
+            w.Button('macro_builder_button_1').text('Add Module').wh_padding(*btn_padding).width(15),
+            w.Button('macro_builder_button_2').text('Select Account').wh_padding(*btn_padding).width(15),
+            w.Button('macro_builder_button_3').text('Set Account Properties').wh_padding(*btn_padding).width(15),
+            w.Button('macro_builder_button_4').text('Add Relay').wh_padding(*btn_padding).width(15),
+            w.Button('macro_builder_button_5').text('Connect Shapes').wh_padding(*btn_padding).width(15),
+            w.Button('macro_builder_button_6').text('Import Macro').wh_padding(*btn_padding).width(15),
+            w.Button('macro_builder_button_7').text('Set Variable').wh_padding(*btn_padding).width(15),
+            w.Spacer(),
+        )
+
+        input_frames = []
+        module_entry = stacker.vstack(
+            w.Label('macro_builder_label_add_module').text('[Add Module]'),
+            stacker.hstack(
+                w.Label('macro_builder_label_module_name').text('Module Name:'),
+                w.Entry('macro_builder_module_name_entry'),
+                w.Spacer().adjust(-1),
+            ),
+            w.TreeView('macro_builder_module_tree'),
+            w.Spacer().adjust(-1),
+        )
+        module_entry_buttons = stacker.vstack(
+            w.Spacer(),
+            w.Button('macro_builder_button_add_module').text('Add').command(lambda: print('a')),
+            w.Button('macro_builder_button_edit_module').text('modify').command(lambda: print('m')),
+            w.Spacer(),
+        )
+        frame_switcher_entries = w.FrameSwitcher('macro_builder_frame_switcher_left', stacker, input_frames).stackers(
+            stacker.hstack(
+                module_entry,
+                module_entry_buttons,
+                w.Spacer().adjust(-2),
+            ),
+        )
+
+        tree_macros = stacker.vstack(
+            w.Label('macro_builder_label_macros').text('Commands'),
+            w.TreeView('macro_builder_tree_macro'),
+            w.Spacer().adjust(-1),
+        )
+
+        account_entry = stacker.vstack(
+            stacker.hstack(
+                w.Label('macro_builder_label_account_name').text('Account Name:'),
+                w.Entry('macro_builder_account_name_entry'),
+                w.Spacer().adjust(-1),
+            ),
+            w.TreeView('macro_builder_account_tree'),
+            w.Spacer().adjust(-1),
+        )
+        account_entry_buttons = stacker.vstack(
+            w.Spacer(),
+            w.Button('macro_builder_button_select_account').text('+').command(lambda: print('a')),
+            w.Button('macro_builder_button_edit_account').text('modify').command(
+                lambda: print('m')),
+            w.Spacer(),
+        )
+
+        frame_switcher_states = w.FrameSwitcher('macro_builder_frame_switcher_right', stacker, input_frames).stackers(
+            stacker.hstack(
+                account_entry_buttons,
+                account_entry,
+                w.Spacer().adjust(-1),
+            ),
+        )
+
+        stacker.hstack(
+            w.PanedWindow('macro_builder_paned_window', stacker).is_horizontal().weights((1, 1, 10, 1)).stackers(
+                action_buttons,
+                frame_switcher_entries,
+                tree_macros,
+                frame_switcher_states,
+            )
+        )
+
+        view_model = stacker.view_model
+        app.add_widgets(view_model)
+        app.launch_app()
+
 
 if __name__ == '__main__':
     unittest.main()
