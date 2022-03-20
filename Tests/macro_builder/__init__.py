@@ -5,7 +5,7 @@ from stacker import widgets as w
 
 paned_window_01 = 'paned_window_01'
 
-# Buttons
+# Widget ID
 btn_001 = 'btn_001'
 btn_002 = 'btn_002'
 btn_003 = 'btn_003'
@@ -31,36 +31,7 @@ btn_cmd_list2 = 'btn_cmd_list2'
 btn_cmd_list3 = 'btn_cmd_list3'
 btn_action_07 = 'btn_action_07'
 
-text_btn001 = 'Add Template'
-text_btn002 = 'Configure Account'
-text_btn003 = 'Add Relay'
-text_btn004 = 'Connect Shapes'
-text_btn005 = 'Import Macro'
-text_btn006 = 'Dictionary'
-text_btn007 = 'Set Sheet Name'
-text_btn_cmd_list1 = '-'
-text_btn_cmd_list2 = 'Execute'
-text_btn_cmd_list3 = 'Save'
-
-btn_macro_list_padding = 10, 5
-
-btn_action_01_text = 'Add Module'
-btn_action_02_01_text = 'Select Account'
-btn_action_02_02_text = 'Configure Account'
-btn_action_03_text_01 = 'Pick Module'
-btn_action_03_text_02 = 'Pick Account'
-btn_action_03_text_03 = 'Add Relay'
-btn_action_04_text_01 = 'Pick Account From'
-btn_action_04_text_02 = 'Pick Account To'
-btn_action_04_text_03 = 'Connect Shapes'
-btn_action_05_text = 'Import Macro'
-btn_action_06_01_text = '+'
-btn_action_06_02_text = '-'
-btn_action_06_03_text = 'edit'
-btn_action_07_text = 'Set Sheet Name'
-
 frame_switcher_input = 'frame_switcher_input'
-input_frames = []
 
 label_input_add_module = 'label_input_add_module'
 label_input_configure_account_01 = 'label_input_configure_account_01'
@@ -85,30 +56,6 @@ label_set_sheet_name_01 = 'label_set_sheet_name_01'
 label_set_sheet_name_02 = 'label_set_sheet_name_02'
 label_set_sheet_name_03 = 'label_set_sheet_name_03'
 label_commands_list = 'macro'
-
-text_input_add_module = 'Module Name'
-text_input_configure_account_01 = 'Account Name'
-text_input_configure_account_02 = ''
-text_input_configure_account_03 = 'Account'
-text_input_configure_account_04 = 'X'
-text_input_configure_account_05 = 'Y'
-text_input_configure_account_06 = 'Width'
-text_input_add_relay_01 = 'Module Name'
-text_input_add_relay_02 = 'Account Name'
-text_input_add_relay_03 = ''
-text_input_add_relay_04 = 'Module'
-text_input_add_relay_05 = 'Account'
-text_input_connect_shape_01 = 'Connect Shapes'
-text_input_connect_shape_02 = 'From'
-text_input_connect_shape_03 = 'To'
-text_input_import_module = 'Import Macro'
-text_edit_dictionary_01 = 'Dictionary'
-text_edit_dictionary_02 = 'Key'
-text_edit_dictionary_03 = 'Value'
-text_label_commands_list = 'Macro Commands'
-text_set_sheet_name_01 = 'Set Sheet Name'
-text_set_sheet_name_02 = 'Current'
-text_set_sheet_name_03 = 'New'
 
 entry_input_add_module = 'entry_input_add_module'
 entry_input_configure_account_01 = 'entry_input_configure_account_01'
@@ -137,6 +84,58 @@ tree_action_03_02 = 'tree_action_03_02'
 tree_action_04 = 'tree_action_04'
 tree_action_05 = 'tree_action_05'
 tree_action_06 = 'tree_action_06'
+
+btn_macro_list_padding = 10, 5
+input_frames = []
+
+text_btn001 = 'Add Template'
+text_btn002 = 'Configure Account'
+text_btn003 = 'Add Relay'
+text_btn004 = 'Connect Shapes'
+text_btn005 = 'Import Macro'
+text_btn006 = 'Dictionary'
+text_btn007 = 'Set Sheet Name'
+text_btn_cmd_list1 = '-'
+text_btn_cmd_list2 = 'Execute'
+text_btn_cmd_list3 = 'Save'
+btn_action_01_text = 'Add Module'
+btn_action_02_01_text = 'Select Account'
+btn_action_02_02_text = 'Configure Account'
+btn_action_03_text_01 = 'Pick Module'
+btn_action_03_text_02 = 'Pick Account'
+btn_action_03_text_03 = 'Add Relay'
+btn_action_04_text_01 = 'Pick Account From'
+btn_action_04_text_02 = 'Pick Account To'
+btn_action_04_text_03 = 'Connect Shapes'
+btn_action_05_text = 'Import Macro'
+btn_action_06_01_text = '+'
+btn_action_06_02_text = '-'
+btn_action_06_03_text = 'edit'
+btn_action_07_text = 'Set Sheet Name'
+
+text_input_add_module = 'Module Name'
+text_input_configure_account_01 = 'Account Name'
+text_input_configure_account_02 = ''
+text_input_configure_account_03 = 'Account'
+text_input_configure_account_04 = 'X'
+text_input_configure_account_05 = 'Y'
+text_input_configure_account_06 = 'Width'
+text_input_add_relay_01 = 'Module Name'
+text_input_add_relay_02 = 'Account Name'
+text_input_add_relay_03 = ''
+text_input_add_relay_04 = 'Module'
+text_input_add_relay_05 = 'Account'
+text_input_connect_shape_01 = 'Connect Shapes'
+text_input_connect_shape_02 = 'From'
+text_input_connect_shape_03 = 'To'
+text_input_import_module = 'Import Macro'
+text_edit_dictionary_01 = 'Dictionary'
+text_edit_dictionary_02 = 'Key'
+text_edit_dictionary_03 = 'Value'
+text_label_commands_list = 'Macro Commands'
+text_set_sheet_name_01 = 'Set Sheet Name'
+text_set_sheet_name_02 = 'Current'
+text_set_sheet_name_03 = 'New'
 
 
 def action_buttons(stacker: Stacker):
@@ -350,6 +349,7 @@ def main(stacker: Stacker):
 
 if __name__ == '__main__':
     import pickle
+
     save_pickle = False
     load_pickle = False
     launch_app = False
@@ -374,4 +374,3 @@ if __name__ == '__main__':
             view_model_from_pickle = pickle.load(f)
 
         print(view_model == view_model_from_pickle)
-
