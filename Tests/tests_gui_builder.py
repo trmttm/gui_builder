@@ -718,93 +718,44 @@ class MyTestCase(unittest.TestCase):
         app.add_widgets(view_model)
         app.launch_app()
 
-    def test_fmdIDE_macro_builder(self):
+    def test_macro_builder(self):
+        import pickle
         from view_tkinter import View
-        from stacker import Stacker
-        from stacker import widgets as w
-
         app = View()
-        stacker = Stacker()
 
-        btn_padding = 0, 20, 20, 0
-        action_buttons = stacker.vstack(
-            w.Button('macro_builder_button_1').text('Add Module').wh_padding(*btn_padding).width(15),
-            w.Button('macro_builder_button_2').text('Select Account').wh_padding(*btn_padding).width(15),
-            w.Button('macro_builder_button_3').text('Set Account Properties').wh_padding(*btn_padding).width(15),
-            w.Button('macro_builder_button_4').text('Add Relay').wh_padding(*btn_padding).width(15),
-            w.Button('macro_builder_button_5').text('Connect Shapes').wh_padding(*btn_padding).width(15),
-            w.Button('macro_builder_button_6').text('Import Macro').wh_padding(*btn_padding).width(15),
-            w.Button('macro_builder_button_7').text('Set Variable').wh_padding(*btn_padding).width(15),
-            w.Spacer(),
-        )
+        pickle_path = '/Users/yamaka/Documents/GitHub/gui_builder/Tests/macro_builder/gui_macro_builder'
+        with open(pickle_path, 'rb') as f:
+            view_model = pickle.load(f)
 
-        input_frames = []
-        module_entry = stacker.vstack(
-            w.Label('macro_builder_label_add_module').text('[Add Module]'),
-            stacker.hstack(
-                w.Label('macro_builder_label_module_name').text('Module Name:'),
-                w.Entry('macro_builder_module_name_entry'),
-                w.Spacer().adjust(-1),
-            ),
-            w.TreeView('macro_builder_module_tree'),
-            w.Spacer().adjust(-1),
-        )
-        module_entry_buttons = stacker.vstack(
-            w.Spacer(),
-            w.Button('macro_builder_button_add_module').text('Add').command(lambda: print('a')),
-            w.Button('macro_builder_button_edit_module').text('modify').command(lambda: print('m')),
-            w.Spacer(),
-        )
-        frame_switcher_entries = w.FrameSwitcher('macro_builder_frame_switcher_left', stacker, input_frames).stackers(
-            stacker.hstack(
-                module_entry,
-                module_entry_buttons,
-                w.Spacer().adjust(-2),
-            ),
-        )
+        switchable_frames = [
+            'frame_3',
+            'frame_9',
+            'frame_14',
+            'frame_19',
+            'frame_21',
+            'frame_25',
+            'frame_28',
+        ]
+        button_ids = [
+            'btn_001',
+            'btn_002',
+            'btn_003',
+            'btn_004',
+            'btn_005',
+            'btn_006',
+            'btn_007',
+        ]
 
-        tree_macros = stacker.vstack(
-            w.Label('macro_builder_label_macros').text('Commands'),
-            w.TreeView('macro_builder_tree_macro'),
-            w.Spacer().adjust(-1),
-        )
+        def switch_frame(n):
+            if len(switchable_frames) >= n + 1:
+                widget_id = switchable_frames[n]
+            else:
+                widget_id = switchable_frames[0]
+            app.switch_frame(widget_id)
 
-        account_entry = stacker.vstack(
-            stacker.hstack(
-                w.Label('macro_builder_label_account_name').text('Account Name:'),
-                w.Entry('macro_builder_account_name_entry'),
-                w.Spacer().adjust(-1),
-            ),
-            w.TreeView('macro_builder_account_tree'),
-            w.Spacer().adjust(-1),
-        )
-        account_entry_buttons = stacker.vstack(
-            w.Spacer(),
-            w.Button('macro_builder_button_select_account').text('+').command(lambda: print('a')),
-            w.Button('macro_builder_button_edit_account').text('modify').command(
-                lambda: print('m')),
-            w.Spacer(),
-        )
-
-        frame_switcher_states = w.FrameSwitcher('macro_builder_frame_switcher_right', stacker, input_frames).stackers(
-            stacker.hstack(
-                account_entry_buttons,
-                account_entry,
-                w.Spacer().adjust(-1),
-            ),
-        )
-
-        stacker.hstack(
-            w.PanedWindow('macro_builder_paned_window', stacker).is_horizontal().weights((1, 1, 10, 1)).stackers(
-                action_buttons,
-                frame_switcher_entries,
-                tree_macros,
-                frame_switcher_states,
-            )
-        )
-
-        view_model = stacker.view_model
         app.add_widgets(view_model)
+        for n, button_id in enumerate(button_ids):
+            app.bind_command_to_widget(button_id, lambda nn=n: switch_frame(nn))
         app.launch_app()
 
 
