@@ -461,6 +461,60 @@ class MyTestCase(unittest.TestCase):
 
         launch_app(stacker.view_model)
 
+    def test_frame_switcher(self):
+        from view_tkinter import View
+        from stacker import Stacker
+        from stacker import widgets as w
+
+        app = View()
+        stacker = Stacker()
+
+        frames_switchable1 = []
+        frames_switchable2 = []
+
+        def switch_frame1(n):
+            index_ = n - 1
+            frame_selected = frames_switchable1[index_]
+            app.switch_frame(frame_selected)
+
+        def switch_frame2(n):
+            index_ = n - 1
+            frame_selected = frames_switchable2[index_]
+            app.switch_frame(frame_selected)
+
+        stacker.vstack(
+            w.FrameSwitcher('frame_stacker_id1', stacker, frames_switchable1).stackers(
+                w.Canvas('canvas1').color('light green'),
+                w.Canvas('canvas2').color('white'),
+                w.Canvas('canvas3').color('orange'),
+            ),
+            w.FrameSwitcher('frame_stacker_id2', stacker, frames_switchable2).stackers(
+                stacker.hstack(w.Spacer(), w.Label('label1').text('Frame1'), w.Spacer()),
+                stacker.hstack(w.Spacer(), w.Label('label2').text('Frame2'), w.Spacer()),
+                stacker.hstack(w.Spacer(), w.Label('label3').text('Frame3'), w.Spacer()),
+            ),
+            stacker.hstack(
+                w.Spacer(),
+                w.Button('btn_switcher1').width(15).text('Switch Canvas 1').command(lambda: switch_frame1(1)),
+                w.Button('btn_switcher2').width(15).text('Switch Canvas 2').command(lambda: switch_frame1(2)),
+                w.Button('btn_switcher3').width(15).text('Switch Canvas 3').command(lambda: switch_frame1(3)),
+                w.Spacer(),
+            ),
+            stacker.hstack(
+                w.Spacer(),
+                w.Button('btn_switcher4').width(15).text('Switch Label 1').command(lambda: switch_frame2(1)),
+                w.Button('btn_switcher5').width(15).text('Switch Label 2').command(lambda: switch_frame2(2)),
+                w.Button('btn_switcher6').width(15).text('Switch Label 3').command(lambda: switch_frame2(3)),
+                w.Spacer(),
+            ),
+        )
+
+        view_model = stacker.view_model
+        app.add_widgets(view_model)
+        app.launch_app()
+
+
+class ActualProjects(unittest.TestCase):
     def test_work_automator_gui(self):
         from stacker import Stacker
         from stacker import widgets as w
@@ -519,58 +573,6 @@ class MyTestCase(unittest.TestCase):
 
         from view_tkinter import View
         app = View()
-        view_model = stacker.view_model
-        app.add_widgets(view_model)
-        app.launch_app()
-
-    def test_frame_switcher(self):
-        from view_tkinter import View
-        from stacker import Stacker
-        from stacker import widgets as w
-
-        app = View()
-        stacker = Stacker()
-
-        frames_switchable1 = []
-        frames_switchable2 = []
-
-        def switch_frame1(n):
-            index_ = n - 1
-            frame_selected = frames_switchable1[index_]
-            app.switch_frame(frame_selected)
-
-        def switch_frame2(n):
-            index_ = n - 1
-            frame_selected = frames_switchable2[index_]
-            app.switch_frame(frame_selected)
-
-        stacker.vstack(
-            w.FrameSwitcher('frame_stacker_id1', stacker, frames_switchable1).stackers(
-                w.Canvas('canvas1').color('light green'),
-                w.Canvas('canvas2').color('white'),
-                w.Canvas('canvas3').color('orange'),
-            ),
-            w.FrameSwitcher('frame_stacker_id2', stacker, frames_switchable2).stackers(
-                stacker.hstack(w.Spacer(), w.Label('label1').text('Frame1'), w.Spacer()),
-                stacker.hstack(w.Spacer(), w.Label('label2').text('Frame2'), w.Spacer()),
-                stacker.hstack(w.Spacer(), w.Label('label3').text('Frame3'), w.Spacer()),
-            ),
-            stacker.hstack(
-                w.Spacer(),
-                w.Button('btn_switcher1').width(15).text('Switch Canvas 1').command(lambda: switch_frame1(1)),
-                w.Button('btn_switcher2').width(15).text('Switch Canvas 2').command(lambda: switch_frame1(2)),
-                w.Button('btn_switcher3').width(15).text('Switch Canvas 3').command(lambda: switch_frame1(3)),
-                w.Spacer(),
-            ),
-            stacker.hstack(
-                w.Spacer(),
-                w.Button('btn_switcher4').width(15).text('Switch Label 1').command(lambda: switch_frame2(1)),
-                w.Button('btn_switcher5').width(15).text('Switch Label 2').command(lambda: switch_frame2(2)),
-                w.Button('btn_switcher6').width(15).text('Switch Label 3').command(lambda: switch_frame2(3)),
-                w.Spacer(),
-            ),
-        )
-
         view_model = stacker.view_model
         app.add_widgets(view_model)
         app.launch_app()
@@ -756,6 +758,52 @@ class MyTestCase(unittest.TestCase):
         app.add_widgets(view_model)
         for n, button_id in enumerate(button_ids):
             app.bind_command_to_widget(button_id, lambda nn=n: switch_frame(nn))
+        app.launch_app()
+
+    def test_uom_setter(self):
+        from view_tkinter import View
+        from stacker import Stacker
+        from stacker import widgets as w
+        import pickle
+
+        app = View()
+        stacker = Stacker()
+        stacker.vstack(
+            stacker.hstack(
+                w.Label('uom_setter_label01').text('UOM from'),
+                w.Entry('uom_setter_entry01'),
+            ),
+            stacker.hstack(
+                w.Label('uom_setter_label02').text('UOM to'),
+                w.Entry('uom_setter_entry02'),
+            ),
+            w.Button('uom_setter_button01').text('Replace All'),
+            stacker.hstack(
+                w.TreeView('uom_setter_tree01'),
+            ),
+            w.Spacer().adjust(-1),
+        )
+
+        import copy
+        view_model = stacker.view_model
+        view_model2 = copy.deepcopy(view_model)
+        app.add_widgets(view_model)
+        app.launch_app()
+
+        with open('uom_replacer', 'wb') as file:
+            pickle.dump(view_model2, file, protocol=pickle.HIGHEST_PROTOCOL)
+
+    def test_from_pickle(self):
+        from view_tkinter import View
+        import pickle
+
+        path = '/Users/yamaka/Documents/GitHub/gui_builder/Tests/uom_replacer'
+
+        with open(path, 'rb') as file:
+            view_model = pickle.load(file)
+
+        app = View()
+        app.add_widgets(view_model)
         app.launch_app()
 
 
