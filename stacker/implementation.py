@@ -20,7 +20,7 @@ def get_widget_or_frame_row_col(direction, n, new_stacker: StackerABC):
     return (n, 0) if (direction == new_stacker.v_direction) else (0, n)
 
 
-def register_spacer(space: list, n: int, element:SpacerABC):
+def register_spacer(space: list, n: int, element: SpacerABC):
     if issubclass(element.__class__, SpacerABC):
         space.append(n + element.adjustment)
 
@@ -94,3 +94,10 @@ def freeze_frame(frame_id, frame_to_stacker_dictionary: dict):
 
     frame = tk_interface.widget_model(**kwargs)
     return frame
+
+
+def register_spacer_widget_or_stacker(direction, elements, new_stacker):
+    space = []
+    register_elements(direction, elements, new_stacker, space)
+    configure_frame(new_stacker, direction, space)
+    return new_stacker

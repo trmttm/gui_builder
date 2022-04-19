@@ -15,6 +15,14 @@ class StackerABC(abc.ABC):
     def vstack(self, *elements):
         pass
 
+    @abc.abstractmethod
+    def hstack_scrollable(self, *elements):
+        pass
+
+    @abc.abstractmethod
+    def vstack_scrollable(self, *elements):
+        pass
+
     @property
     @abc.abstractmethod
     def v_direction(self):

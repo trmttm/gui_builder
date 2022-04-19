@@ -14,7 +14,7 @@ class Stacker(StackerABC):
     _v_direction = 'vertical'
     _h_direction = 'horizontal'
 
-    def __init__(self, specified_parent=None):
+    def __init__(self, specified_parent=None, scrollable=False):
         self._parent = specified_parent or 'root'  # Default Parent
 
         self._id = Stacker._id
@@ -24,7 +24,7 @@ class Stacker(StackerABC):
         self._row = 0
         self._col = 0
         self._frame_options = {}
-        self._static_kwargs = {'widget_type': 'frame', 'sticky': 'nsew'}
+        self._static_kwargs = {'widget_type': 'frame' if not scrollable else 'scrollable_frame', 'sticky': 'nsew'}
         self._children_stackers: List[Stacker] = []
         self._view_model = []
 
@@ -99,15 +99,31 @@ class Stacker(StackerABC):
         new_stacker = self._register_spacer_widget_or_stacker(self._v_direction, elements)
         return new_stacker
 
+    def hstack_scrollable(self, *elements: Union[WidgetABC, SpacerABC, 'Stacker']):
+        new_stacker = self._register_spacer_widget_or_stacker_scrollable(self._h_direction, elements)
+        return new_stacker
+
+    def vstack_scrollable(self, *elements: Union[WidgetABC, SpacerABC, 'Stacker']):
+        new_stacker = self._register_spacer_widget_or_stacker_scrollable(self._v_direction, elements)
+        return new_stacker
+
     def _register_spacer_widget_or_stacker(self, direction, elements):
         new_stacker = self._instantiate_and_link_new_stacker()
-        space = []
-        implementation.register_elements(direction, elements, new_stacker, space)
-        implementation.configure_frame(new_stacker, direction, space)
-        return new_stacker
+        return implementation.register_spacer_widget_or_stacker(direction, elements, new_stacker)
+
+    def _register_spacer_widget_or_stacker_scrollable(self, direction, elements):
+        new_stacker = self._instantiate_and_link_new_stacker_scrollable()
+        return implementation.register_spacer_widget_or_stacker(direction, elements, new_stacker)
 
     def _instantiate_and_link_new_stacker(self) -> 'Stacker':
         new_stacker = Stacker(self._parent)
+        return self._link_new_stacker(new_stacker)
+
+    def _instantiate_and_link_new_stacker_scrollable(self) -> 'Stacker':
+        new_stacker = Stacker(self._parent, True)
+        return self._link_new_stacker(new_stacker)
+
+    def _link_new_stacker(self, new_stacker):
         self._frame_to_stacker_dictionary[new_stacker._frame_id] = new_stacker
         self._children_stackers.append(new_stacker)
         return new_stacker
