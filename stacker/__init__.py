@@ -3,6 +3,7 @@ from typing import Union
 
 from stacker.spacer_abc import SpacerABC
 from stacker.widget_abc import WidgetABC
+
 from . import handle_other_frame_holders
 from . import implementation
 from .stacker_abc import StackerABC
@@ -13,8 +14,8 @@ class Stacker(StackerABC):
     _v_direction = 'vertical'
     _h_direction = 'horizontal'
 
-    def __init__(self):
-        self._parent = 'root'  # Default Parent
+    def __init__(self, specified_parent=None):
+        self._parent = specified_parent or 'root'  # Default Parent
 
         self._id = Stacker._id
         self._frame_id = f'frame_{self._id}'
