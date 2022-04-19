@@ -24,7 +24,8 @@ class Stacker(StackerABC):
         self._row = 0
         self._col = 0
         self._frame_options = {}
-        self._static_kwargs = {'widget_type': 'frame' if not scrollable else 'scrollable_frame', 'sticky': 'nsew'}
+        frame_type = 'frame' if not scrollable else 'scrollable_frame'
+        self._static_kwargs = {'widget_type': frame_type, 'sticky': 'nsew'}
         self._children_stackers: List[Stacker] = []
         self._view_model = []
 
