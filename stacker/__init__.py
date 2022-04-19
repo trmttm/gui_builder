@@ -107,7 +107,7 @@ class Stacker(StackerABC):
         return new_stacker
 
     def _instantiate_and_link_new_stacker(self) -> 'Stacker':
-        new_stacker = Stacker()
+        new_stacker = Stacker(self._parent)
         self._frame_to_stacker_dictionary[new_stacker._frame_id] = new_stacker
         self._children_stackers.append(new_stacker)
         return new_stacker

@@ -3,16 +3,19 @@ from typing import Dict
 
 from .tree_root_to_leaf import Node
 
+
 def sort_view_model_for_paned_window(view_model: list) -> list:
     # create Nodes and widget_model_dictionary
-    parent_id_to_children_widget_models: Dict[Any, list] = {'root': []}
-    parent_id_to_children_widget_ids: dict = {'root': []}
+    all_parents = tuple(i[0] for i in view_model)
+    root_or_specified_root = 'root' if 'root' in all_parents else all_parents[0]
+    parent_id_to_children_widget_models: Dict[Any, list] = {root_or_specified_root: []}
+    parent_id_to_children_widget_ids: dict = {root_or_specified_root: []}
     widget_id_to_widget_model = {}
     frame_id_to_frame_options = {}
     pn_parents = set()
 
-    root = Node('root')
-    id_to_node = {'root': root, }
+    root = Node(root_or_specified_root)
+    id_to_node = {root_or_specified_root: root, }
     pn_ids = []
     for widget_model in view_model:
         parent_id = widget_model[0]
@@ -54,7 +57,7 @@ def sort_view_model_for_paned_window(view_model: list) -> list:
     leaves = []
     all_nodes = tuple(id_to_node.values())
     for node in all_nodes:
-        if node == 'root':
+        if node == root_or_specified_root:
             continue
         if not node.next_nodes:
             leaves.append(node)
@@ -64,15 +67,15 @@ def sort_view_model_for_paned_window(view_model: list) -> list:
     for each_leaf in leaves:
         path = [each_leaf.name]
         parent_node = each_leaf.previous_node
-        while parent_node != 'root':
+        while parent_node not in ('root', root_or_specified_root):
             path.insert(0, parent_node.name)
             parent_node = parent_node.previous_node
 
-        if path[0] != 'root':
-            path.insert(0, 'root')
+        if path[0] != root_or_specified_root:
+            path.insert(0, root_or_specified_root)
         complete_paths.append(path)
 
-    already_inserted_widget_id = {'root'}
+    already_inserted_widget_id = {root_or_specified_root}
     already_inserted_pair = set()
     for pn_id in pn_ids:
         already_inserted_widget_id.add(pn_id)  # pn_id's children frame are automatically created
