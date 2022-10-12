@@ -1,7 +1,7 @@
 from typing import Dict
 from typing import List
 
-from view_tkinter import tk_interface
+import interface_tk as tk_interface
 
 from .spacer_abc import SpacerABC
 from .stacker_abc import StackerABC

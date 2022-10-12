@@ -1,7 +1,6 @@
 from typing import Union
 
-from view_tkinter import tk_interface
-
+import interface_tk as tk_interface
 from stacker.widgets import Spacer
 from stacker.widgets import Widget
 
