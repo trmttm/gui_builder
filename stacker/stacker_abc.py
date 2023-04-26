@@ -8,19 +8,19 @@ class StackerABC(abc.ABC):
         pass
 
     @abc.abstractmethod
-    def hstack(self, *elements):
+    def hstack(self, *elements) -> 'StackerABC':
         pass
 
     @abc.abstractmethod
-    def vstack(self, *elements):
+    def vstack(self, *elements) -> 'StackerABC':
         pass
 
     @abc.abstractmethod
-    def hstack_scrollable(self, *elements):
+    def hstack_scrollable(self, *elements) -> 'StackerABC':
         pass
 
     @abc.abstractmethod
-    def vstack_scrollable(self, *elements):
+    def vstack_scrollable(self, *elements) -> 'StackerABC':
         pass
 
     @property

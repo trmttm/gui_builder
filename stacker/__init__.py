@@ -92,27 +92,27 @@ class Stacker(StackerABC):
     def set_parent(self, parent_id):
         self._parent = parent_id
 
-    def hstack(self, *elements: Union[WidgetABC, SpacerABC, 'Stacker']):
+    def hstack(self, *elements: Union[WidgetABC, SpacerABC, 'Stacker']) -> StackerABC:
         new_stacker = self._register_spacer_widget_or_stacker(self._h_direction, elements)
         return new_stacker
 
-    def vstack(self, *elements: Union[WidgetABC, SpacerABC, 'Stacker']):
+    def vstack(self, *elements: Union[WidgetABC, SpacerABC, 'Stacker']) -> StackerABC:
         new_stacker = self._register_spacer_widget_or_stacker(self._v_direction, elements)
         return new_stacker
 
-    def hstack_scrollable(self, *elements: Union[WidgetABC, SpacerABC, 'Stacker']):
+    def hstack_scrollable(self, *elements: Union[WidgetABC, SpacerABC, 'Stacker']) -> StackerABC:
         new_stacker = self._register_spacer_widget_or_stacker_scrollable(self._h_direction, elements)
         return new_stacker
 
-    def vstack_scrollable(self, *elements: Union[WidgetABC, SpacerABC, 'Stacker']):
+    def vstack_scrollable(self, *elements: Union[WidgetABC, SpacerABC, 'Stacker']) -> StackerABC:
         new_stacker = self._register_spacer_widget_or_stacker_scrollable(self._v_direction, elements)
         return new_stacker
 
-    def _register_spacer_widget_or_stacker(self, direction, elements):
+    def _register_spacer_widget_or_stacker(self, direction, elements) -> StackerABC:
         new_stacker = self._instantiate_and_link_new_stacker()
         return implementation.register_spacer_widget_or_stacker(direction, elements, new_stacker)
 
-    def _register_spacer_widget_or_stacker_scrollable(self, direction, elements):
+    def _register_spacer_widget_or_stacker_scrollable(self, direction, elements) -> StackerABC:
         new_stacker = self._instantiate_and_link_new_stacker_scrollable()
         return implementation.register_spacer_widget_or_stacker(direction, elements, new_stacker)
 
