@@ -3,6 +3,11 @@ from typing import List
 
 
 class StackerABC(abc.ABC):
+    @property
+    @abc.abstractmethod
+    def view_model(self) -> list:
+        pass
+
     @abc.abstractmethod
     def set_frame_id(self, frame_id):
         pass
