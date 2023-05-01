@@ -92,19 +92,19 @@ class Stacker(StackerABC):
     def set_parent(self, parent_id):
         self._parent = parent_id
 
-    def hstack(self, *elements: Union[WidgetABC, SpacerABC, 'Stacker']) -> StackerABC:
+    def hstack(self, *elements: Union[WidgetABC, SpacerABC, 'Stacker', StackerABC]) -> StackerABC:
         new_stacker = self._register_spacer_widget_or_stacker(self._h_direction, elements)
         return new_stacker
 
-    def vstack(self, *elements: Union[WidgetABC, SpacerABC, 'Stacker']) -> StackerABC:
+    def vstack(self, *elements: Union[WidgetABC, SpacerABC, 'Stacker', StackerABC]) -> StackerABC:
         new_stacker = self._register_spacer_widget_or_stacker(self._v_direction, elements)
         return new_stacker
 
-    def hstack_scrollable(self, *elements: Union[WidgetABC, SpacerABC, 'Stacker']) -> StackerABC:
+    def hstack_scrollable(self, *elements: Union[WidgetABC, SpacerABC, 'Stacker', StackerABC]) -> StackerABC:
         new_stacker = self._register_spacer_widget_or_stacker_scrollable(self._h_direction, elements)
         return new_stacker
 
-    def vstack_scrollable(self, *elements: Union[WidgetABC, SpacerABC, 'Stacker']) -> StackerABC:
+    def vstack_scrollable(self, *elements: Union[WidgetABC, SpacerABC, 'Stacker', StackerABC]) -> StackerABC:
         new_stacker = self._register_spacer_widget_or_stacker_scrollable(self._v_direction, elements)
         return new_stacker
 
