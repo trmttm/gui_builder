@@ -1,7 +1,6 @@
-from view_tkinter import View
-
 from stacker import Stacker
 from stacker import widgets as w
+from view_tkinter import View
 
 
 class MacroBuilder:
@@ -236,7 +235,7 @@ class MacroBuilder:
         t = self._widget_id_to_text.get
         stacker = self._stacker
         btn_pad = 0, 10, 10, 0
-        btn_macro_padding = 10,5
+        btn_macro_padding = 10, 5
         return stacker.hstack(
             w.Button(f('btn_cmd_list1')).text(t('text_btn_cmd_list1')).padding(*btn_macro_padding).wh_padding(*btn_pad),
             w.Spacer(),
